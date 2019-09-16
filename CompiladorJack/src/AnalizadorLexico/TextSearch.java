@@ -66,7 +66,6 @@ public class TextSearch {
                     start += regexMatcher.start() +"\n";
 
         }
-        System.out.println(start);
         return start;
     }
 
