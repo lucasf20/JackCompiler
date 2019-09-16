@@ -12,12 +12,11 @@ public class JackTokenizer {
    public JackTokenizer(String path){
 
         //regex
-        String regKeywords = "(\\b(class|constructor|function|method|field|static|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return)\\b)|//.*";
-        String regSimbolos = "//.*|\\b#|\\}|\\(|\\)|\\[|\\]|\\.|\\,|\\;|\\+|\\-|\\*|\\/|\\&|\\||\\<|\\>|\\=|\\~|\\{";
-        String regNumeros = "//.*|(\\b([0-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|[1-8][0-9]{3}|9[0-8][0-9]{2}|99[0-8][0-9]|999[0-9]|[12][0-9]{4}|3[01][0-9]{3}|32[0-6][0-9]{2}|327[0-5][0-9]|3276[0-7])\\b)";
-        String regStr = "//.*|(\"(.*?)\")";
-        String regIndentificadores = "\\b(?!class|constructor|function|method|field|static|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return)+([a-z]|[A-Z]|_)([0-9]|[a-z]|[A-Z]|_)*|//.*|" + regStr;
-
+       String regStr = "(\"(.*?)\")";
+       String regKeywords = regStr + "|(\\b(constructor|class|function|method|field|static|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return))|//.*";
+       String regSimbolos = regStr + "|//.*|\\}|\\(|\\)|\\[|\\]|\\.|\\,|\\;|\\+|\\-|\\*|\\/|\\&|\\||\\<|\\>|\\=|\\~|\\{";
+       String regNumeros = regStr + "|//.*|(\\b([0-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|[1-8][0-9]{3}|9[0-8][0-9]{2}|99[0-8][0-9]|999[0-9]|[12][0-9]{4}|3[01][0-9]{3}|32[0-6][0-9]{2}|327[0-5][0-9]|3276[0-7])\\b)";
+       String regIndentificadores = "\\b(?!class|constructor|function|method|field|static|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return)+([a-z]|[A-Z]|_)([0-9]|[a-z]|[A-Z]|_)*|//.*|" + regStr;
         //arquivo .jack
         String texto = rgx.lerArquivoJack(path);
 
@@ -33,7 +32,7 @@ public class JackTokenizer {
         String[] xmlForaDeOrdemSeparado = xmlForaDeOrdem.split("\n");
 
         //string contendo a posicao inicial das palavras
-        String start = rgx.tokenStart(regKeywords,texto) + rgx.tokenStart(regSimbolos,texto) + rgx.tokenStart(regNumeros,texto)+ rgx.tokenStart(regIndentificadores,texto) ;
+        String start = rgx.tokenStart(regKeywords,texto, "keyword") + rgx.tokenStart(regSimbolos,texto, "symbol") + rgx.tokenStart(regNumeros,texto,"intConst")+ rgx.tokenStart(regIndentificadores,texto,"identifier") ;
 
         //vetor de inteiros contendo a posicao inicial das palavras
         int[] tokenSt= rgx.convertParaInt(start);
