@@ -34,36 +34,39 @@ public class TextSearch {
 
         while (regexMatcher.find()){
             if(!regexMatcher.group().startsWith("//")) { //ignorar comentarios
-                rst += "<" + token + ">";
-                if (!regexMatcher.group().contains("<") && !regexMatcher.group().contains(">") && !regexMatcher.group().contains("&") && !regexMatcher.group().contains("\""))
-                    rst += regexMatcher.group();
-                else {
-                    if (regexMatcher.group().contains("<"))
-                        rst += regexMatcher.group().replace("<", "&lt;");
-                    if (regexMatcher.group().contains(">"))
-                        rst += regexMatcher.group().replace(">", "&gt;");
-                    if (regexMatcher.group().contains("&"))
-                        rst += regexMatcher.group().replace("&", "&amp;");
-                    if (regexMatcher.group().contains("\""))
-                        rst += regexMatcher.group().replace("\"", "&quot;");
+                if(!regexMatcher.group().startsWith("\"") || token.contains("identifier")){
+                    rst += "<" + token + ">";
+                    if (!regexMatcher.group().contains("<") && !regexMatcher.group().contains(">") && !regexMatcher.group().contains("&") && !regexMatcher.group().contains("\""))
+                        rst += regexMatcher.group();
+                    else {
+                        if (regexMatcher.group().contains("<"))
+                            rst += regexMatcher.group().replace("<", "&lt;");
+                        if (regexMatcher.group().contains(">"))
+                            rst += regexMatcher.group().replace(">", "&gt;");
+                        if (regexMatcher.group().contains("&"))
+                            rst += regexMatcher.group().replace("&", "&amp;");
+                        if (regexMatcher.group().contains("\""))
+                            rst += regexMatcher.group().replace("\"", "&quot;");
                     }
                 rst += "</" + token + ">\n";
-                }
+                }}
             }
         return  rst;
         }
 
-    public static String tokenStart(String regex, String texto){//busca a posicao inicial das palavras
+    public static String tokenStart(String regex, String texto, String token){//busca a posicao inicial das palavras
         Pattern checkRegex = Pattern.compile(regex);
         Matcher regexMatcher = checkRegex.matcher(texto);
 
         String start = "";
 
         while (regexMatcher.find()){
-            if(!regexMatcher.group().startsWith("//")) //ignorar comentarios
-            start += regexMatcher.start() +"\n";
-        }
+            if(!regexMatcher.group().startsWith("//"))
+                if(!regexMatcher.group().startsWith("\"") || token.contains("identifier"))//ignorar comentarios
+                    start += regexMatcher.start() +"\n";
 
+        }
+        System.out.println(start);
         return start;
     }
 
@@ -86,7 +89,7 @@ public class TextSearch {
         String rst = "<tokens>\n";
         int i = 0;
         int j;
-        int comparar = 10000000;
+        int comparar = 999999999;
         int menor;
         while(i < tokens.length){
             j = 0;
@@ -99,7 +102,7 @@ public class TextSearch {
                 j++;
             }
             rst += tokens[menor] + "\n";
-            comparar = 10000000;
+            comparar = 999999999;
             tokenSt[menor] = comparar;
             i++;
         }
