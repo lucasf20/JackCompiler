@@ -49,10 +49,11 @@ public class TextSearch {
                             rst += regexMatcher.group().replace("\"", "&quot;");
                     }
                 rst += "</" + token + ">\n";
-                }}
+                }
             }
-        return  rst;
         }
+        return  rst;
+    }
 
     public static String tokenStart(String regex, String texto, String token){//busca a posicao inicial das palavras
         Pattern checkRegex = Pattern.compile(regex);
@@ -85,7 +86,7 @@ public class TextSearch {
     }
 
     public static String xmlOrdenado(String[] tokens, int[] tokenSt ){//ordena os tokens a partir de sua posicao incial
-        String rst = "<tokens>\n";
+        String rst = "";
         int i = 0;
         int j;
         int comparar = 999999999;
@@ -105,7 +106,6 @@ public class TextSearch {
             tokenSt[menor] = comparar;
             i++;
         }
-        rst += "</tokens>";
         return rst;
     }
 
