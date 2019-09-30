@@ -51,6 +51,11 @@ public class TextSearch {
                 rst += "</" + token + ">\n";
                 }
             }
+            else{
+                if(regexMatcher.group().contains("*/") && token.contains("symbol")){
+                    rst += "<symbol>*</symbol>\n<symbol>/</symbol>\n";
+                }
+            }
         }
         return  rst;
     }
@@ -62,10 +67,16 @@ public class TextSearch {
         String start = "";
 
         while (regexMatcher.find()){
-            if(!regexMatcher.group().startsWith("//"))
-                if(!regexMatcher.group().startsWith("\"") || token.contains("identifier"))//ignorar comentarios
-                    start += regexMatcher.start() +"\n";
-
+            if(!regexMatcher.group().startsWith("//")) {
+                if (!regexMatcher.group().startsWith("\"") || token.contains("identifier"))//ignorar comentarios
+                    start += regexMatcher.start() + "\n";
+            }
+            else{
+                if(regexMatcher.group().contains("*/") && token.contains("symbol")){
+                    start += regexMatcher.group().indexOf("*/") +"\n";
+                    start += (regexMatcher.group().indexOf("*/") + 1) +"\n";
+                }
+            }
         }
         return start;
     }
@@ -91,6 +102,7 @@ public class TextSearch {
         int j;
         int comparar = 999999999;
         int menor;
+
         while(i < tokens.length){
             j = 0;
             menor = 0;
@@ -109,4 +121,52 @@ public class TextSearch {
         return rst;
     }
 
+    public String comentariosDeBloco (String xml){
+        String blockSt = "<symbol>/</symbol>\n" + "<symbol>*</symbol>";
+        String blockEnd = "<symbol>*</symbol>\n" + "<symbol>/</symbol>";
+        String rst = xml.replace(blockSt,"<coment>");
+        if(rst.contains("<coment>"))
+            rst = rst.replace(blockEnd, "</coment>");
+        else
+            rst = rst.replace(blockEnd + "\n","");
+        return eliminaBloco(rst);
+    }
+
+    private String eliminaBloco (String blocoMarcado){
+        String[] separaBlocos = blocoMarcado.split("<coment>");
+        String rst = "";
+        if(validaComent(blocoMarcado)[0] >= validaComent(blocoMarcado)[1]){
+            for(int i = 0; i < separaBlocos.length; i++){
+                if(separaBlocos[i].split("</coment>").length > 1)
+                    separaBlocos[i] = separaBlocos[i].split("</coment>\n")[1];
+                rst += separaBlocos[i];
+            }
+        }
+        else{
+            for(int i = 0; i < separaBlocos.length - 1; i++){
+                if(separaBlocos[i].split("</coment>").length > 1) {
+                    separaBlocos[i] = separaBlocos[i].split("</coment>\n")[1];
+                }
+                rst += separaBlocos[i];
+            }
+            for(int i = 1; i < separaBlocos[separaBlocos.length - 1].split("</coment>\n").length; i++){
+                rst += "<symbol>*</symbol>\n" + "<symbol>/</symbol>\n" + separaBlocos[separaBlocos.length - 1].split("</coment>\n")[i];
+            }
+        }
+        return rst;
+    }
+
+    private int[] validaComent(String texto){
+        int[] tags = new int[2];
+        String[] linhaAlinha = texto.split("\n");
+        for(int i = 0; i < linhaAlinha.length; i++){
+            if(linhaAlinha[i].contains("<coment>")){
+                tags[0]++;
+            }
+            if(linhaAlinha[i].contains("</coment>")){
+                tags[1]++;
+            }
+        }
+        return tags;
+    }
 }
