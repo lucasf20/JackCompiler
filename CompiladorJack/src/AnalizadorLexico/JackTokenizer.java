@@ -19,7 +19,7 @@ public class JackTokenizer {
        String regIndentificadores = "\\b(?!class|constructor|function|method|field|static|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return)+([a-z]|[A-Z]|_)([0-9]|[a-z]|[A-Z]|_)*|//.*|" + regStr;
 
        //arquivo .jack
-        String texto = rgx.lerArquivoJack(path);
+       String texto = rgx.lerArquivoJack(path);
 
         //busca de palavras e classificacao
         String keywords = rgx.regexChecker(regKeywords,texto,"keyword");
@@ -44,6 +44,7 @@ public class JackTokenizer {
         //xml final - insercao da tag stringConst
         xmlFinal = xmlOrdenado.replace("&quot;</identifier>","</stringConst>");
         xmlFinal = xmlFinal.replace("<identifier>&quot;","<stringConst>");
+        xmlFinal = rgx.comentariosDeBloco(xmlFinal); // trata os comentarios de bloco
 
         tokens = xmlFinal.split("\n");
         tokenPos = 0;
