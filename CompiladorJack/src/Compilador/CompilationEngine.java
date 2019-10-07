@@ -1,4 +1,4 @@
-package AnalizadorLexico;
+package Compilador;
 
 public class CompilationEngine {
     JackTokenizer tokenizer;
@@ -37,7 +37,7 @@ public class CompilationEngine {
         tokenizer.rgx.escreverXML(xml);
      }
 
-     public boolean className (String token){
+     private boolean className (String token){
         return tokenizer.tokenType(token).contains("identifier");
      }
 
@@ -71,7 +71,7 @@ public class CompilationEngine {
         return clas;
      }
 
-     public boolean type(String token){
+     private boolean type(String token){
         boolean rst = false;
         if(className(token)){
             rst = true;
@@ -82,7 +82,7 @@ public class CompilationEngine {
         return rst;
      }
 
-     public boolean varName(String token){
+     private boolean varName(String token){
         return tokenizer.tokenType(token).contains("identifier");
      }
 
@@ -117,7 +117,7 @@ public class CompilationEngine {
 
         return subroutine;
      }
-    public boolean subRoutineName(String token){
+    private boolean subRoutineName(String token){
         return tokenizer.tokenType(token).contains("identifier");
     }
 
@@ -141,7 +141,7 @@ public class CompilationEngine {
         return parameter;
     }
 
-    public String subroutineBody(){
+    private String subroutineBody(){
         String body = "<subroutineBody>\n       ";
 
         if(tokenizer.symbol(tokenizer.token).contains("{")){
@@ -192,7 +192,7 @@ public class CompilationEngine {
             }
         }
 
-        varDec += "</varDec>\n         ";
+        varDec += "</varDec>\n       git push -u origin master ";
         return varDec;
     }
 
@@ -266,23 +266,56 @@ public class CompilationEngine {
         return let;
     }
 
+    private String auxExp(){
+        String e = "";
+        if(isTerm()){
+            e += compileTerm();
+            tokenizer.advance();
+            if(tokenizer.hasMoreTokens() && op(tokenizer.token)){
+                e += tokenizer.token + "\n            ";
+                tokenizer.advance();
+                e += auxExp();
+            }
+        }
+        return e;
+    }
+
     public String compileExpression(){
         String exp = "<expression>\n            ";
-        exp += compileTerm();
-        tokenizer.advance();
-        while(op(tokenizer.token) && tokenizer.hasMoreTokens()){
-            exp += tokenizer.token + "\n            ";
-            tokenizer.advance();
-            exp += compileTerm();
-            //tokenizer.advance();
-        }
+        exp += auxExp();
         exp += "</expression>\n            ";
         return exp;
     }
 
+    private boolean isTerm(){
+        boolean rst = false;
+        if(tokenizer.tokenType(tokenizer.token).contains("intConst")){
+            rst = true;
+        }
+        if(tokenizer.tokenType(tokenizer.token).contains("stringConst")){
+            rst = true;
+        }
+        if(keywordConstant()){
+            rst = true;
+        }
+        if(varName(tokenizer.token)){
+            rst = true;
+        }
+        return rst;
+    }
+
     public String compileTerm(){
         String term = "<term>\n         ";
-        if(tokenizer.tokenType(tokenizer.token).contains("intConst")|varName(tokenizer.token)){
+        if(tokenizer.tokenType(tokenizer.token).contains("intConst")){
+            term += tokenizer.token + "\n         ";
+        }
+        if(tokenizer.tokenType(tokenizer.token).contains("stringConst")){
+            term += tokenizer.token + "\n         ";
+        }
+        if(keywordConstant()){
+            term += tokenizer.token + "\n         ";
+        }
+        if(varName(tokenizer.token)){
             term += tokenizer.token + "\n         ";
         }
         term += "</term>\n         ";
@@ -296,13 +329,32 @@ public class CompilationEngine {
         return rst;
     }
 
-    public boolean keywordConstant(){
+    private boolean keywordConstant(){
         boolean rst = false;
 
         if(tokenizer.keyWord(tokenizer.token).contains("this")|tokenizer.keyWord(tokenizer.token).contains("true")|tokenizer.keyWord(tokenizer.token).contains("false")|tokenizer.keyWord(tokenizer.token).contains("null")){
             rst = true;
         }
         return rst;
+    }
+
+    private String subroute(){
+        String sub = "";
+        if (tokenizer.symbol(tokenizer.token).contains("(")) {
+            sub += tokenizer.token + "\n         ";
+            tokenizer.advance();
+            if (tokenizer.symbol(tokenizer.token).contains(")")) {
+                sub += "<expressionList>\n          </expressionList>\n           ";
+                sub += tokenizer.token + "\n         ";
+            } else {
+                sub += compileExpressionList();
+                if (tokenizer.symbol(tokenizer.token).contains(")")) {
+                    sub += tokenizer.token + "\n         ";
+                }
+
+            }
+        }
+        return sub;
     }
 
     public String compileDo(){
@@ -313,80 +365,53 @@ public class CompilationEngine {
             if(subRoutineName(tokenizer.token)){
                 doo += tokenizer.token + "\n           ";
                 tokenizer.advance();
+                System.out.println(tokenizer.token);
                 if(tokenizer.symbol(tokenizer.token).contains("(")){
-                    doo += tokenizer.token + "\n           ";
+                    doo += subroute();
                     tokenizer.advance();
-                    if(keywordConstant()){
-                        doo += tokenizer.token + "\n           ";
-                        tokenizer.advance();
-                    }
-                    else{
-                        if(!tokenizer.symbol(tokenizer.token).contains(")"))
-                            doo += compileExpressionList();
-                        else{
-                            doo += "<expressionList>\n" + "        </expressionList>\n        ";
-                        }
-                    }
-                    if(tokenizer.symbol(tokenizer.token).contains(")")){
-                        doo += tokenizer.token + "\n           ";
-                        tokenizer.advance();
-                        if(tokenizer.symbol(tokenizer.token).contains(";")){
-                            doo += tokenizer.token + "\n           ";
-                        }
+                    if(tokenizer.symbol(tokenizer.token).contains(";")){
+                        doo += tokenizer.token + "\n     ";
                     }
                 }
                 else{
                     if(tokenizer.symbol(tokenizer.token).contains(".")){
                         doo += tokenizer.token + "\n           ";
                         tokenizer.advance();
-                        if(className(tokenizer.token)|varName(tokenizer.token)){
+                        if(varName(tokenizer.token)){
                             doo += tokenizer.token + "\n           ";
                             tokenizer.advance();
-                                if(tokenizer.symbol(tokenizer.token).contains("(")){
-                                    doo += tokenizer.token + "\n           ";
-                                    tokenizer.advance();
-                                    if(keywordConstant()){
-                                        doo += tokenizer.token + "\n           ";
-                                        tokenizer.advance();
-                                    }
-                                    else{
-                                        doo += compileExpressionList();
-                                    }
-                                    if(tokenizer.symbol(tokenizer.token).contains(")")){
-                                        doo += tokenizer.token + "\n           ";
-                                        tokenizer.advance();
-                                        if(tokenizer.symbol(tokenizer.token).contains(";")){
-                                            doo += tokenizer.token + "\n           ";
-                                        }
-                                    }
-                                }
+                            doo += subroute();
+                            tokenizer.advance();
+                            if(tokenizer.symbol(tokenizer.token).contains(";")){
+                                doo += tokenizer.token + "\n     ";
                             }
                         }
                     }
                 }
             }
-
+        }
         doo += "</doStatement>\n       ";
         return doo;
     }
 
     public String compileExpressionList(){
         String expList = "<expressionList>\n        ";
-        String aux;
-        if(tokenizer.tokenType(tokenizer.token).contains("identifier")|tokenizer.tokenType(tokenizer.token).contains("intConst")){
-            aux = compileExpression();
-            if(aux.contains("intConst")|aux.contains("identifier")){
-                expList += aux;
-                while(tokenizer.symbol(tokenizer.token).contains(",") && tokenizer.hasMoreTokens()){
+        while (tokenizer.hasMoreTokens()){
+            if(isTerm()){
+                expList += compileExpression();
+                if(tokenizer.symbol(tokenizer.token).contains(",")){
                     expList += tokenizer.token + "\n        ";
                     tokenizer.advance();
-                    expList += compileExpression();
+                }
+                else{
+                    break;
                 }
             }
         }
         expList += "</expressionList>\n        ";
         return expList;
     }
+
     public String compileReturn(){
         String ret = "<returnStatement>\n           ";
         String aux;
@@ -438,8 +463,6 @@ public class CompilationEngine {
                                     ife += tokenizer.token + "\n           ";
                                     tokenizer.advance();
                                     ife += compileStatements();
-                                    tokenizer.advance();
-                                    System.out.println(tokenizer.token);
                                     if(tokenizer.symbol(tokenizer.token).contains("}")){
                                         ife += tokenizer.token + "\n      ";
                                         tokenizer.advance();
@@ -480,7 +503,7 @@ public class CompilationEngine {
                 }
             }
         }
-        whl += "<whileStatement>\n       ";
+        whl += "</whileStatement>\n       ";
         return whl;
     }
 }

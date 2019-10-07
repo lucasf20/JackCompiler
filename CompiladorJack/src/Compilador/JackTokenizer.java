@@ -1,4 +1,4 @@
-package AnalizadorLexico;
+package Compilador;
 
 public class JackTokenizer {
 
