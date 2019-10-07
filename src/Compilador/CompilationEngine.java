@@ -192,7 +192,7 @@ public class CompilationEngine {
             }
         }
 
-        varDec += "</varDec>\n       git push -u origin master ";
+        varDec += "</varDec>\n         ";
         return varDec;
     }
 
