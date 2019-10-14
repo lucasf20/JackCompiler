@@ -4,7 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.*;
 
-public class TextSearch {
+public class TextTools {
     public static String lerArquivoJack(String path){ //lê o arquivo jack e retorna uma string de seu conteudo
         Path caminho = Paths.get(path);
         String rst = "-1";
@@ -121,7 +121,7 @@ public class TextSearch {
         return rst;
     }
 
-    public String comentariosDeBloco (String xml){
+    public static String comentariosDeBloco (String xml){
         String blockSt = "<symbol>/</symbol>\n" + "<symbol>*</symbol>";
         String blockEnd = "<symbol>*</symbol>\n" + "<symbol>/</symbol>";
         String rst = xml.replace(blockSt,"<coment>");
@@ -132,7 +132,7 @@ public class TextSearch {
         return eliminaBloco(rst);
     }
 
-    private String eliminaBloco (String blocoMarcado){
+    private static String eliminaBloco (String blocoMarcado){
         String[] separaBlocos = blocoMarcado.split("<coment>");
         String rst = "";
         if(validaComent(blocoMarcado)[0] >= validaComent(blocoMarcado)[1]){
@@ -156,7 +156,7 @@ public class TextSearch {
         return rst;
     }
 
-    private int[] validaComent(String texto){
+    private static int[] validaComent(String texto){
         int[] tags = new int[2];
         String[] linhaAlinha = texto.split("\n");
         for(int i = 0; i < linhaAlinha.length; i++){

@@ -34,7 +34,7 @@ public class CompilationEngine {
         if(!tokenizer.hasMoreTokens())
             xml += "</class>";
         System.out.println(xml);
-        tokenizer.rgx.escreverXML(xml);
+        TextTools.escreverXML(xml);
      }
 
      private boolean className (String token){

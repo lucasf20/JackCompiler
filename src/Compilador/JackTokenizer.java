@@ -2,7 +2,6 @@ package Compilador;
 
 public class JackTokenizer {
 
-    public static TextSearch rgx = new TextSearch();
     public static String xmlFinal;
     public static String token;
 
@@ -13,19 +12,19 @@ public class JackTokenizer {
 
         //regex
        String regStr = "(\"(.*?)\")";
-       String regKeywords = regStr + "|(\\b(constructor|class|function|method|field|static|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return))|//.*";
+       String regKeywords = regStr + "|(\\b(constructor|class|function|method|field|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return))|//.*";
        String regSimbolos = regStr + "|//.*|\\}|\\(|\\)|\\[|\\]|\\.|\\,|\\;|\\+|\\-|\\*|\\/|\\&|\\||\\<|\\>|\\=|\\~|\\{";
        String regNumeros = regStr + "|//.*|(\\b([0-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|[1-8][0-9]{3}|9[0-8][0-9]{2}|99[0-8][0-9]|999[0-9]|[12][0-9]{4}|3[01][0-9]{3}|32[0-6][0-9]{2}|327[0-5][0-9]|3276[0-7])\\b)";
-       String regIndentificadores = "\\b(?!class|constructor|function|method|field|static|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return)+([a-z]|[A-Z]|_)([0-9]|[a-z]|[A-Z]|_)*|//.*|" + regStr;
+       String regIndentificadores = "\\b(?!class|constructor|function|method|field|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return)+([a-z]|[A-Z]|_)([0-9]|[a-z]|[A-Z]|_)*|//.*|" + regStr;
 
        //arquivo .jack
-       String texto = rgx.lerArquivoJack(path);
+       String texto = TextTools.lerArquivoJack(path);
 
         //busca de palavras e classificacao
-        String keywords = rgx.regexChecker(regKeywords,texto,"keyword");
-        String simbolos = rgx.regexChecker(regSimbolos,texto,"symbol");
-        String numeros = rgx.regexChecker(regNumeros,texto,"intConst");
-        String identificadores = rgx.regexChecker(regIndentificadores,texto,"identifier");
+        String keywords = TextTools.regexChecker(regKeywords,texto,"keyword");
+        String simbolos = TextTools.regexChecker(regSimbolos,texto,"symbol");
+        String numeros = TextTools.regexChecker(regNumeros,texto,"intConst");
+        String identificadores = TextTools.regexChecker(regIndentificadores,texto,"identifier");
         //as stringConst sao classificadas primeiramente como identifier, depois elas irao ser reclassificadas em sua categoria correta
 
         //string nao ordenada
@@ -33,29 +32,29 @@ public class JackTokenizer {
         String[] xmlForaDeOrdemSeparado = xmlForaDeOrdem.split("\n");
 
         //string contendo a posicao inicial das palavras
-        String start = rgx.tokenStart(regKeywords,texto, "keyword") + rgx.tokenStart(regSimbolos,texto, "symbol") + rgx.tokenStart(regNumeros,texto,"intConst")+ rgx.tokenStart(regIndentificadores,texto,"identifier") ;
+        String start = TextTools.tokenStart(regKeywords,texto, "keyword") + TextTools.tokenStart(regSimbolos,texto, "symbol") + TextTools.tokenStart(regNumeros,texto,"intConst")+ TextTools.tokenStart(regIndentificadores,texto,"identifier") ;
 
         //vetor de inteiros contendo a posicao inicial das palavras
-        int[] tokenSt= rgx.convertParaInt(start);
+        int[] tokenSt= TextTools.convertParaInt(start);
 
         //xml ordenado
-        String xmlOrdenado = rgx.xmlOrdenado(xmlForaDeOrdemSeparado,tokenSt);
+        String xmlOrdenado = TextTools.xmlOrdenado(xmlForaDeOrdemSeparado,tokenSt);
 
         //xml final - insercao da tag stringConst
         xmlFinal = xmlOrdenado.replace("&quot;</identifier>","</stringConst>");
         xmlFinal = xmlFinal.replace("<identifier>&quot;","<stringConst>");
-        xmlFinal = rgx.comentariosDeBloco(xmlFinal); // trata os comentarios de bloco
+        xmlFinal = TextTools.comentariosDeBloco(xmlFinal); // trata os comentarios de bloco
 
         tokens = xmlFinal.split("\n");
         tokenPos = 0;
 
        }
 
-       public static void zerar(){// leva o cursor dos tokens para o comeco
+       public void zerar(){// leva o cursor dos tokens para o comeco
             tokenPos = 0;
        }
 
-       public static boolean hasMoreTokens(){
+       public boolean hasMoreTokens(){
             boolean rst;
             if(tokenPos < tokens.length)
                 rst = true;
@@ -64,14 +63,14 @@ public class JackTokenizer {
             return rst;
             }
 
-       public static void advance(){
+       public void advance(){
             if(hasMoreTokens()){
                 token = tokens[tokenPos];
                 tokenPos++;
             }
        }
 
-       public static String tokenType(String tks){
+       public String tokenType(String tks){
             String rst = "None";
             String[] tkspl = tks.split(">");
             String tk = tkspl[0];
@@ -88,7 +87,7 @@ public class JackTokenizer {
             return rst;
        }
 
-       public static String keyWord(String tk){
+       public String keyWord(String tk){
             String rst = "";
             String[] tks = tk.split(">");
             if(!tokenType(tk).contains("keyword"))
@@ -100,7 +99,7 @@ public class JackTokenizer {
             return rst;
         }
 
-       public static String symbol(String tk){
+       public String symbol(String tk){
            String rst = "";
            String[] tks = tk.split(">");
            if(!tokenType(tk).contains("symbol"))
@@ -116,7 +115,7 @@ public class JackTokenizer {
            return rst;
         }
 
-        public static String identifier(String tk){
+        public String identifier(String tk){
             String rst = "";
             String[] tks = tk.split(">");
             if(!tokenType(tk).contains("identifier"))
@@ -128,7 +127,7 @@ public class JackTokenizer {
             return rst;
         }
 
-        public static int intVal (String tk){
+        public int intVal (String tk){
             int opt;
             String rst;
             String[] tks = tk.split(">");
@@ -142,7 +141,7 @@ public class JackTokenizer {
             return opt;
         }
 
-        public static String stringVal (String tk){
+        public String stringVal (String tk){
             String rst = "";
             String[] tks = tk.split(">");
             if(!tokenType(tk).contains("stringConst"))
