@@ -6,7 +6,7 @@ public class JackTokenizer {
     public static String token;
 
     private static String[] tokens;
-    private static int tokenPos;
+    public static int tokenPos;
 
    public JackTokenizer(String path){
 

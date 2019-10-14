@@ -27,18 +27,30 @@ public class CompilationEngine {
                     if(tokenizer.symbol(tokenizer.token).contains("}")){
                         xml += tokenizer.token + "\n    ";
                         tokenizer.advance();
+                    }else{
+                        imprime_erro();
                     }
                 }
             }
         }
-        if(!tokenizer.hasMoreTokens())
+        if(!tokenizer.hasMoreTokens()){
             xml += "</class>";
-        System.out.println(xml);
-        TextTools.escreverXML(xml);
+            System.out.println(xml);
+            TextTools.escreverXML(xml);
+        }
+        else{
+            imprime_erro();
+        }
      }
 
      private boolean className (String token){
-        return tokenizer.tokenType(token).contains("identifier");
+        if(tokenizer.tokenType(token).contains("identifier"))
+            return true;
+        else{
+            System.out.println("Esperado um identifier");
+            imprime_erro();
+            return false;
+        }
      }
 
      public String compileClassVarDec(){
@@ -67,23 +79,33 @@ public class CompilationEngine {
         }
         if(tokenizer.symbol(tokenizer.token).contains(";")){
             clas += tokenizer.token + "\n    </classVarDec>\n   ";
+        }else {
+            System.out.println("Esperado ;");
+            imprime_erro();
         }
         return clas;
      }
 
      private boolean type(String token){
         boolean rst = false;
-        if(className(token)){
-            rst = true;
+        if(tokenizer.tokenType(token).contains("identifier")){
+            if(className(token)){
+                rst = true;
+            }
         }
-        if(tokenizer.keyWord(token).contains("int")|tokenizer.keyWord(token).contains("char")|tokenizer.keyWord(token).contains("boolean")){
-            rst = true;
+        if(tokenizer.tokenType(token).contains("keyword")){
+            if(tokenizer.keyWord(token).contains("int")|tokenizer.keyWord(token).contains("char")|tokenizer.keyWord(token).contains("boolean")){
+                rst = true;
+            }
+        }
+        if(!rst && !tokenizer.keyWord(token).contains("void")){
+            System.out.println("Esperado um identifier ou as palavras: int, char, boolean");
         }
         return rst;
      }
 
      private boolean varName(String token){
-        return tokenizer.tokenType(token).contains("identifier");
+        return className(token);
      }
 
      public String compileSubRoutine(){
@@ -114,11 +136,15 @@ public class CompilationEngine {
              }
             subroutine +="</subroutineDec>\n    ";
         }
+        if(!tokenizer.token.contains("}")){
+            System.out.println("Esperado }");
+            imprime_erro();
+        }
 
         return subroutine;
      }
     private boolean subRoutineName(String token){
-        return tokenizer.tokenType(token).contains("identifier");
+        return className(token);
     }
 
     public String compileParamenterList(){
@@ -138,6 +164,10 @@ public class CompilationEngine {
             }
         }
         parameter += "</parameterList>\n      ";
+        if(!tokenizer.token.contains(")")){
+            System.out.println("Esperado )");
+            imprime_erro();
+        }
         return parameter;
     }
 
@@ -188,6 +218,10 @@ public class CompilationEngine {
                 if(tokenizer.symbol(tokenizer.token).contains(";")){
                     varDec += tokenizer.token +"\n         ";
                     tokenizer.advance();
+                }
+                else{
+                    System.out.println("Esperado ;");
+                    imprime_erro();
                 }
             }
         }
@@ -262,6 +296,10 @@ public class CompilationEngine {
             }
         }
 
+        if(!tokenizer.symbol(tokenizer.token).contains(";")){
+            System.out.println("Esperado ;");
+            imprime_erro();
+        }
         let += "</letStatement>\n     ";
         return let;
     }
@@ -295,11 +333,17 @@ public class CompilationEngine {
         if(tokenizer.tokenType(tokenizer.token).contains("stringConst")){
             rst = true;
         }
-        if(keywordConstant()){
+        if(tokenizer.tokenType(tokenizer.token).contains("keyword")){
+            if(keywordConstant()){
+                rst = true;
+            }
+        }
+        if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
             rst = true;
         }
-        if(varName(tokenizer.token)){
-            rst = true;
+        if(!rst){
+            System.out.println("Term incorreto");
+            imprime_erro();
         }
         return rst;
     }
@@ -312,10 +356,12 @@ public class CompilationEngine {
         if(tokenizer.tokenType(tokenizer.token).contains("stringConst")){
             term += tokenizer.token + "\n         ";
         }
-        if(keywordConstant()){
-            term += tokenizer.token + "\n         ";
+        if(tokenizer.tokenType(tokenizer.token).contains("keyword")){
+            if(keywordConstant()){
+                term += tokenizer.token + "\n         ";
+            }
         }
-        if(varName(tokenizer.token)){
+        if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
             term += tokenizer.token + "\n         ";
         }
         term += "</term>\n         ";
@@ -334,6 +380,10 @@ public class CompilationEngine {
 
         if(tokenizer.keyWord(tokenizer.token).contains("this")|tokenizer.keyWord(tokenizer.token).contains("true")|tokenizer.keyWord(tokenizer.token).contains("false")|tokenizer.keyWord(tokenizer.token).contains("null")){
             rst = true;
+        }
+        if(!rst){
+            System.out.println("Esperado this, true, false ou null");
+            imprime_erro();
         }
         return rst;
     }
@@ -354,6 +404,10 @@ public class CompilationEngine {
 
             }
         }
+        if(!tokenizer.symbol(tokenizer.token).contains(")")){
+            System.out.println("Esperado )");
+            imprime_erro();
+        }
         return sub;
     }
 
@@ -365,7 +419,6 @@ public class CompilationEngine {
             if(subRoutineName(tokenizer.token)){
                 doo += tokenizer.token + "\n           ";
                 tokenizer.advance();
-                System.out.println(tokenizer.token);
                 if(tokenizer.symbol(tokenizer.token).contains("(")){
                     doo += subroute();
                     tokenizer.advance();
@@ -389,6 +442,10 @@ public class CompilationEngine {
                     }
                 }
             }
+        }
+        if(!tokenizer.symbol(tokenizer.token).contains(";")){
+            System.out.println("Esperado ;");
+            imprime_erro();
         }
         doo += "</doStatement>\n       ";
         return doo;
@@ -433,6 +490,10 @@ public class CompilationEngine {
             }
 
         }
+        if(!tokenizer.symbol(tokenizer.token).contains(";")){
+            System.out.println("Esperado ;");
+            imprime_erro();
+        }
         ret += "</returnStatement>\n        ";
         return ret;
     }
@@ -467,9 +528,15 @@ public class CompilationEngine {
                                         ife += tokenizer.token + "\n      ";
                                         tokenizer.advance();
 
+                                    }else{
+                                        System.out.println("Esperado }");
+                                        imprime_erro();
                                     }
                                 }
                             }
+                        }else{
+                            System.out.println("Esperado }");
+                            imprime_erro();
                         }
                     }
                 }
@@ -498,6 +565,9 @@ public class CompilationEngine {
                         if(tokenizer.symbol(tokenizer.token).contains("}")){
                             whl += tokenizer.token + "\n      ";
                             tokenizer.advance();
+                        }else{
+                            System.out.println("Esperado }");
+                            imprime_erro();
                         }
                     }
                 }
@@ -505,5 +575,23 @@ public class CompilationEngine {
         }
         whl += "</whileStatement>\n       ";
         return whl;
+    }
+    private void imprime_erro(){
+        if(tokenizer.tokenType(tokenizer.token).contains("keyword")){
+            System.out.println("Erro proximo a: " + tokenizer.keyWord(tokenizer.token));
+        }
+        if(tokenizer.tokenType(tokenizer.token).contains("symbol")){
+            System.out.println("Erro proximo a: "+ tokenizer.symbol(tokenizer.token));
+        }
+        if(tokenizer.tokenType(tokenizer.token).contains("intConst")){
+            System.out.println("Erro proximo a:  " + tokenizer.intVal(tokenizer.token));
+        }
+        if(tokenizer.tokenType(tokenizer.token).contains("stringConst")){
+            System.out.println("Erro proximo a: " + tokenizer.stringVal(tokenizer.token));
+        }
+        if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
+            System.out.println("Erro proximo a: " +  tokenizer.identifier(tokenizer.token));
+        }
+        System.exit(-1);
     }
 }
