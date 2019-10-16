@@ -3,6 +3,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.*;
+import java.util.stream.Stream;
 
 public class TextTools {
     public static String lerArquivoJack(String path){ //lê o arquivo jack e retorna uma string de seu conteudo
@@ -102,7 +103,6 @@ public class TextTools {
         int j;
         int comparar = 999999999;
         int menor;
-
         while(i < tokens.length){
             j = 0;
             menor = 0;
@@ -168,5 +168,12 @@ public class TextTools {
             }
         }
         return tags;
+    }
+
+    public static int controleDeLinha(int tokenpos, String path){
+        String file = lerArquivoJack(path);
+        String divide = file.substring(0,tokenpos);
+        Stream<String> lines = divide.lines();
+        return (int)lines.count();
     }
 }

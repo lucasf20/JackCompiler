@@ -305,6 +305,36 @@
             <term>
          <identifier>key</identifier>
          </term>
+         <symbol>+</symbol>
+            <term>
+         <identifier>a</identifier>
+         <symbol>[</symbol>
+         <expression>
+            <term>
+         <intConst>17</intConst>
+         </term>
+         </expression>
+            <symbol>]</symbol>
+         </term>
+         <symbol>+</symbol>
+            <term>
+         <identifier>f</identifier>
+         <symbol>.</symbol>
+       <identifier>fa</identifier>
+       <symbol>(</symbol>
+       <expressionList>
+        <expression>
+            <term>
+         <intConst>12</intConst>
+         </term>
+         <symbol>+</symbol>
+            <term>
+         <stringConst>oi</stringConst>
+         </term>
+         </expression>
+            </expressionList>
+        <symbol>)</symbol>
+       </term>
          </expression>
             <symbol>;</symbol>
          </letStatement>
