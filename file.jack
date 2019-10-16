@@ -39,7 +39,7 @@ class SquareGame {
          while (key) {
             let key = key + a[17] + f.fa(12+"oi");
             do moveSquare();
-         }
+            }
 
          if (key) { let exit = exit; }
          if (key) { do square.decSize(); }

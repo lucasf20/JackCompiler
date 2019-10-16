@@ -43,6 +43,7 @@ public class JackTokenizer {
         String xmlOrdenado = TextTools.xmlOrdenado(xmlForaDeOrdemSeparado,tokenSt);
         tokenSt= TextTools.convertParaInt(start);
         tkPos = TextTools.convertParaInt(TextTools.xmlOrdenado(startSp,tokenSt));
+        tkPos = TextTools.removeSujeira(path,tkPos);
 
         //xml final - insercao da tag stringConst
         xmlFinal = xmlOrdenado.replace("&quot;</identifier>","</stringConst>");

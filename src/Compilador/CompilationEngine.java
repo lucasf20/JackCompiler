@@ -102,6 +102,7 @@ public class CompilationEngine {
         }
         if(!rst && !tokenizer.keyWord(token).contains("void")){
             System.out.println("Esperado um identifier ou as palavras: int, char, boolean");
+            imprime_erro();
         }
         return rst;
      }
