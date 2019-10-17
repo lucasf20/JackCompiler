@@ -3,6 +3,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.*;
+import java.util.stream.Stream;
 
 public class TextTools {
     public static String lerArquivoJack(String path){ //lê o arquivo jack e retorna uma string de seu conteudo
@@ -102,7 +103,6 @@ public class TextTools {
         int j;
         int comparar = 999999999;
         int menor;
-
         while(i < tokens.length){
             j = 0;
             menor = 0;
@@ -168,5 +168,46 @@ public class TextTools {
             }
         }
         return tags;
+    }
+
+    public static int[] removeSujeira(String path, int[] tkst){
+        int[] rst = new int[tkst.length];
+        int[] rst2;
+        int aux =0;
+        int cnt = 0;
+        String file = lerArquivoJack(path);
+        for (int i = 1; i < tkst.length; i++){
+            if(file.charAt(tkst[i-1]) == '/' && file.charAt(tkst[i]) == '*'){
+                rst[i-1] = -1;
+                cnt++;
+                while(i < tkst.length){
+                    rst[i] = -1;
+                    i++;
+                    cnt++;
+                    if(file.charAt(tkst[i]) == '/' && file.charAt(tkst[i-1]) == '*'){
+                        rst[i] = -1;
+                        cnt++;
+                        break;
+                    }
+                }
+            }else{
+                rst[i] = tkst[i];
+            }
+        }
+        rst2 = new int[rst.length - cnt];
+        for(int i = 0; i < rst.length; i++){
+            if(rst[i] != -1){
+                rst2[aux] = rst[i];
+                aux++;
+            }
+        }
+        return rst2;
+    }
+
+    public static int controleDeLinha(int tokenpos, String path){
+        String file = lerArquivoJack(path);
+        String divide = file.substring(0,tokenpos);
+        Stream<String> lines = divide.lines();
+        return (int)lines.count();
     }
 }

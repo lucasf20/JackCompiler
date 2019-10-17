@@ -4,9 +4,10 @@ public class JackTokenizer {
 
     public static String xmlFinal;
     public static String token;
-
+    public static int tkst;
     private static String[] tokens;
     private static int tokenPos;
+    private static int[] tkPos;
 
    public JackTokenizer(String path){
 
@@ -33,12 +34,16 @@ public class JackTokenizer {
 
         //string contendo a posicao inicial das palavras
         String start = TextTools.tokenStart(regKeywords,texto, "keyword") + TextTools.tokenStart(regSimbolos,texto, "symbol") + TextTools.tokenStart(regNumeros,texto,"intConst")+ TextTools.tokenStart(regIndentificadores,texto,"identifier") ;
+        String[] startSp = start.split("\n");
 
         //vetor de inteiros contendo a posicao inicial das palavras
         int[] tokenSt= TextTools.convertParaInt(start);
 
         //xml ordenado
         String xmlOrdenado = TextTools.xmlOrdenado(xmlForaDeOrdemSeparado,tokenSt);
+        tokenSt= TextTools.convertParaInt(start);
+        tkPos = TextTools.convertParaInt(TextTools.xmlOrdenado(startSp,tokenSt));
+        tkPos = TextTools.removeSujeira(path,tkPos);
 
         //xml final - insercao da tag stringConst
         xmlFinal = xmlOrdenado.replace("&quot;</identifier>","</stringConst>");
@@ -66,6 +71,7 @@ public class JackTokenizer {
        public void advance(){
             if(hasMoreTokens()){
                 token = tokens[tokenPos];
+                tkst = tkPos[tokenPos];
                 tokenPos++;
             }
        }
