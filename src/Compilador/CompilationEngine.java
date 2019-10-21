@@ -485,6 +485,7 @@ public class CompilationEngine {
             rst += tokenizer.token+  "\n      ";
             tokenizer.advance();
             rst += subroutineCall();
+
             if(tokenizer.symbol(tokenizer.token).contains(";")){
                 rst += tokenizer.token+  "\n      ";
             }else{
