@@ -21,10 +21,7 @@ public class CompilationEngine {
                 if(tokenizer.symbol(tokenizer.token).contains("{")){
                     xml += tokenizer.token + "\n    ";
                     tokenizer.advance();
-                    while(tokenizer.hasMoreTokens() && !(tokenizer.keyWord(tokenizer.token).contains("constructor") | tokenizer.keyWord(tokenizer.token).contains("function") | tokenizer.keyWord(tokenizer.token).contains("method"))){
-                        xml += compileClassVarDec();
-                        tokenizer.advance();
-                    }
+                    xml += compileClassVarDec();
                     xml += compileSubRoutine();
                     if(tokenizer.symbol(tokenizer.token).contains("}")){
                         xml += tokenizer.token + "\n    ";
@@ -55,36 +52,46 @@ public class CompilationEngine {
         }
      }
 
-     public String compileClassVarDec(){
-        String clas = "<classVarDec>\n      ";
-        while (tokenizer.hasMoreTokens() && !tokenizer.symbol(tokenizer.token).contains(";")){
-            if(tokenizer.keyWord(tokenizer.token).contains("static")|tokenizer.keyWord(tokenizer.token).contains("field")){
-                clas += tokenizer.token + "\n      ";
+     private String classVarDecAux(){
+        String rst ="";
+        if(tokenizer.keyWord(tokenizer.token).contains("field") | tokenizer.keyWord(tokenizer.token).contains("static")){
+            rst += tokenizer.token + "\n      ";
+            tokenizer.advance();
+            if(type(tokenizer.token)){
+                rst += tokenizer.token+ "\n      ";
                 tokenizer.advance();
-                if(type(tokenizer.token)){
-                    clas += tokenizer.token + "\n      ";
+                if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
+                    rst += tokenizer.token+ "\n      ";
                     tokenizer.advance();
-                    if(varName(tokenizer.token)){
-                        clas += tokenizer.token + "\n      ";
-                        tokenizer.advance();
-                        if(tokenizer.symbol(tokenizer.token).contains(",")){
-                            clas += tokenizer.token + "\n      ";
+                    if(tokenizer.symbol(tokenizer.token).contains(",")){
+                        while (tokenizer.symbol(tokenizer.token).contains(",")){
+                            rst += tokenizer.token+ "\n      ";
                             tokenizer.advance();
-                            if(varName(tokenizer.token)){
-                                clas += tokenizer.token + "\n      ";
+                            if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
+                                rst += tokenizer.token+ "\n      ";
                                 tokenizer.advance();
                             }
                         }
                     }
+                    if(tokenizer.symbol(tokenizer.token).contains(";")){
+                        rst += tokenizer.token+ "\n      ";
+                        tokenizer.advance();
+                    }else {
+                        System.out.println("Esperado ;");
+                        imprime_erro();
+                    }
                 }
             }
         }
-        if(tokenizer.symbol(tokenizer.token).contains(";")){
-            clas += tokenizer.token + "\n    </classVarDec>\n   ";
-        }else {
-            System.out.println("Esperado ;");
-            imprime_erro();
+        return rst;
+     }
+
+     public String compileClassVarDec(){
+        String clas = "<classVarDec>\n      ";
+        while (tokenizer.keyWord(tokenizer.token).contains("field") | tokenizer.keyWord(tokenizer.token).contains("static")){
+            clas += classVarDecAux();
         }
+        clas += "</classVarDec>\n      ";
         return clas;
      }
 
@@ -412,7 +419,11 @@ public class CompilationEngine {
         if(tokenizer.symbol(tokenizer.token).contains("(")){
             call += tokenizer.token + "\n       ";
             tokenizer.advance();
-            call += compileExpressionList();
+            if(!tokenizer.symbol(tokenizer.token).contains(")")){
+                call += compileExpressionList();
+            }else{
+                call += "<expressionList>\n        " + "</expressionList>\n        ";
+            }
             if(tokenizer.symbol(tokenizer.token).contains(")")){
                 call += tokenizer.token + "\n       ";
                 tokenizer.advance();
@@ -468,64 +479,28 @@ public class CompilationEngine {
         return rst;
     }
 
-    private String subroute(){
-        String sub = "";
-        if (tokenizer.symbol(tokenizer.token).contains("(")) {
-            sub += tokenizer.token + "\n         ";
+    private String doaux(){
+        String rst ="";
+        if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
+            rst += tokenizer.token+  "\n      ";
             tokenizer.advance();
-            if (tokenizer.symbol(tokenizer.token).contains(")")) {
-                sub += "<expressionList>\n          </expressionList>\n           ";
-                sub += tokenizer.token + "\n         ";
-            } else {
-                sub += compileExpressionList();
-                if (tokenizer.symbol(tokenizer.token).contains(")")) {
-                    sub += tokenizer.token + "\n         ";
-                }
-
+            rst += subroutineCall();
+            if(tokenizer.symbol(tokenizer.token).contains(";")){
+                rst += tokenizer.token+  "\n      ";
+            }else{
+                System.out.println("Esperado ;");
+                imprime_erro();
             }
         }
-        if(!tokenizer.symbol(tokenizer.token).contains(")")){
-            System.out.println("Esperado )");
-            imprime_erro();
-        }
-        return sub;
+        return rst;
     }
 
     public String compileDo(){
         String doo = "<doStatement>\n           ";
         if(tokenizer.keyWord(tokenizer.token).contains("do")){
-            doo += tokenizer.token + "\n           ";
+            doo += tokenizer.token +  "\n      ";
             tokenizer.advance();
-            if(subRoutineName(tokenizer.token)){
-                doo += tokenizer.token + "\n           ";
-                tokenizer.advance();
-                if(tokenizer.symbol(tokenizer.token).contains("(")){
-                    doo += subroute();
-                    tokenizer.advance();
-                    if(tokenizer.symbol(tokenizer.token).contains(";")){
-                        doo += tokenizer.token + "\n     ";
-                    }
-                }
-                else{
-                    if(tokenizer.symbol(tokenizer.token).contains(".")){
-                        doo += tokenizer.token + "\n           ";
-                        tokenizer.advance();
-                        if(varName(tokenizer.token)){
-                            doo += tokenizer.token + "\n           ";
-                            tokenizer.advance();
-                            doo += subroute();
-                            tokenizer.advance();
-                            if(tokenizer.symbol(tokenizer.token).contains(";")){
-                                doo += tokenizer.token + "\n     ";
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if(!tokenizer.symbol(tokenizer.token).contains(";")){
-            System.out.println("Esperado ;");
-            imprime_erro();
+            doo += doaux();
         }
         doo += "</doStatement>\n       ";
         return doo;

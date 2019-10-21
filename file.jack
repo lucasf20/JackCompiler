@@ -37,7 +37,7 @@ class SquareGame {
       let exit = key;
       while (exit) {
          while (key) {
-            let key = key + a[17] + f.fa(12+"oi");
+            let key = key + a[17] + f.fa(12+"oi") + f();
             do moveSquare();
             }
 
