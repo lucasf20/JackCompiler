@@ -18,8 +18,8 @@ public class TextTools {
         return rst;
     }
 
-    public static void escreverXML(String codigo){ //escreve o arquivo.xml
-        Path caminho = Paths.get("jack.xml");
+    public static void escreverXML(String codigo, String path){ //escreve o arquivo.xml
+        Path caminho = Paths.get(path.replaceFirst(".jack", ".xml"));
         byte[] conteudo = codigo.getBytes();
         try {
             Files.write(caminho, conteudo);
