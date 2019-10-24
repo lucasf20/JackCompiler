@@ -35,7 +35,7 @@ public class CompilationEngine {
         if(!tokenizer.hasMoreTokens()){
             xml += "</class>";
             System.out.println(xml);
-            TextTools.escreverXML(xml);
+            TextTools.escreverXML(xml, local);
         }
         else{
             imprime_erro();
