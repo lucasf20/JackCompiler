@@ -4,9 +4,6 @@ import java.io.File;
 
 public class JackCompiler {
     public static void main(String[] args){
-
-
-
         for (int i = 0 ; i < args.length; i++) {
             File file = new File (args[0]);
             if (file.isDirectory()) {
@@ -18,9 +15,6 @@ public class JackCompiler {
             } else {
                 new CompilationEngine(args[i]);
             }
-
-
         }
-
     }
 }
