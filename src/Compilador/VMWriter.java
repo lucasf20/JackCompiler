@@ -11,6 +11,7 @@ public class VMWriter {
 
     public VMWriter(String filepath){
         file = Paths.get(filepath.replaceAll(".jack",".vm"));
+        codigo = "";
         writeFile("");
     }
 
