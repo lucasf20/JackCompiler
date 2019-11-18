@@ -2,16 +2,16 @@ function Square.calc 0
 push constant 1
 return 
 function Square.new 1
-push constant 0
+push constant 3
 call Memory.alloc 1
 pop pointer 0
-pop local 1
-pop local 2
-pop local 3
+pop field 0
+pop field 1
+pop field 2
 push calc -1
 call Square.calc 0
 call .calc 1
-pop local 4
+pop local 0
 call Square.draw 0
 pop temp 0
 push pointer 0
@@ -59,7 +59,7 @@ goto IF_FALSE0
 label IF_TRUE0
 call Square.erase 0
 pop temp 0
-pop local 0
+pop field 2
 call Square.draw 0
 pop temp 0
 push constant 0
@@ -72,7 +72,7 @@ goto IF_FALSE1
 label IF_TRUE1
 call Square.erase 0
 pop temp 0
-pop local 0
+pop field 2
 call Square.draw 0
 pop temp 0
 push constant 0
@@ -91,7 +91,7 @@ push drawRectangle -1
 call Screen.y 4
 call .drawRectangle 5
 pop temp 0
-pop local 0
+pop field 1
 push setColor -1
 call Screen.x 1
 call .setColor 2
@@ -116,7 +116,7 @@ push drawRectangle -1
 call Screen.y 4
 call .drawRectangle 5
 pop temp 0
-pop local 0
+pop field 1
 push setColor -1
 call Screen.x 1
 call .setColor 2
@@ -141,7 +141,7 @@ push drawRectangle -1
 call Screen.y 4
 call .drawRectangle 5
 pop temp 0
-pop local 0
+pop field 0
 push setColor -1
 call Screen.x 1
 call .setColor 2
@@ -166,7 +166,7 @@ push drawRectangle -1
 call Screen.y 4
 call .drawRectangle 5
 pop temp 0
-pop local 0
+pop field 0
 push setColor -1
 call Screen.x 1
 call .setColor 2

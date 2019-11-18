@@ -84,7 +84,7 @@ public class SymbolTable {
         val = values.toArray(val);
 
         for(String v:val){
-            if(v == kind){
+            if(v.contains(kind)){
                 number++;
             }
         }
@@ -101,7 +101,7 @@ public class SymbolTable {
         n = names.toArray(n);
         k = kinds.toArray(k);
         for(int i = 0; i < n.length; i++){
-            if(n[i] == name){
+            if(n[i].contains(name)){
                 rst = k[i];
                 break;
             }
@@ -116,7 +116,7 @@ public class SymbolTable {
         List<String> types = symboltable.get("type");
 
         for(int i =0; i < names.size(); i++){
-            if(names.get(i) == name){
+            if(names.get(i).contains(name)){
                 rst = types.get(i);
                 break;
             }
@@ -131,7 +131,7 @@ public class SymbolTable {
         List<String> indexes = symboltable.get("index");
 
         for(int i =0; i < names.size(); i++){
-            if(names.get(i) == name){
+            if(names.get(i).contains(name)){
                 rst = Integer.parseInt(indexes.get(i));
                 break;
             }

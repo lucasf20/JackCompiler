@@ -40,13 +40,13 @@ push constant 32
 call String.appendChar 2
 call Keyboard.readInt 1
 call .readInt 2
-pop local 2
+pop local 0
 push new -1
 call Array.length 1
 call .new 2
-pop local 3
+pop local 0
 push constant 0
-pop local 4
+pop argument 0
 label WHILE_EXP0
 lt
 not
@@ -88,16 +88,16 @@ push constant 32
 call String.appendChar 2
 call Keyboard.readInt 1
 call .readInt 2
-pop local 5
+pop local 0
 add
-push  -1
+push local 0
 add
 pop pointer 1
 push that 0
-pop local 6
+pop local 1
 add
 push constant 1
-pop local 7
+pop argument 0
 goto WHILE_EXP0
 label WHILE_END0
 push printString -1
