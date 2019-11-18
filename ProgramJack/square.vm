@@ -1,0 +1,125 @@
+function Square.calc 0
+push constant 1
+return 
+function Square.new 1
+push constant 0
+call Memory.alloc 1
+pop pointer 0
+call Square.calc 0
+call Square.draw 0
+pop temp 0
+push pointer 0
+function Square.dispose 5
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return 
+function Square.draw 5
+push argument 0
+pop pointer 0
+call Screen.x 1
+pop temp 0
+call Screen.y 4
+pop temp 0
+push constant 0
+return 
+function Square.erase 5
+push argument 0
+pop pointer 0
+call Screen.x 1
+pop temp 0
+call Screen.y 4
+pop temp 0
+push constant 0
+return 
+function Square.incSize 5
+push argument 0
+pop pointer 0
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+call Square.erase 0
+pop temp 0
+call Square.draw 0
+pop temp 0
+push constant 0
+return 
+function Square.decSize 6
+push argument 0
+pop pointer 0
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+call Square.erase 0
+pop temp 0
+call Square.draw 0
+pop temp 0
+push constant 0
+return 
+function Square.moveUp 7
+push argument 0
+pop pointer 0
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+call Screen.x 1
+pop temp 0
+call Screen.y 4
+pop temp 0
+call Screen.x 1
+pop temp 0
+call Screen.y 4
+pop temp 0
+push constant 0
+return 
+function Square.moveDown 8
+push argument 0
+pop pointer 0
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+call Screen.x 1
+pop temp 0
+call Screen.y 4
+pop temp 0
+call Screen.x 1
+pop temp 0
+call Screen.y 4
+pop temp 0
+push constant 0
+return 
+function Square.moveLeft 9
+push argument 0
+pop pointer 0
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+call Screen.x 1
+pop temp 0
+call Screen.y 4
+pop temp 0
+call Screen.x 1
+pop temp 0
+call Screen.y 4
+pop temp 0
+push constant 0
+return 
+function Square.moveRight 10
+push argument 0
+pop pointer 0
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+call Screen.x 1
+pop temp 0
+call Screen.y 4
+pop temp 0
+call Screen.x 1
+pop temp 0
+call Screen.y 4
+pop temp 0
+push constant 0
+return 

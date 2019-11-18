@@ -1,0 +1,104 @@
+function SquareGame.new 0
+push constant 0
+call Memory.alloc 1
+pop pointer 0
+return 
+function SquareGame.dispose 2
+push argument 0
+pop pointer 0
+call square.dispose 0
+pop temp 0
+call Memory.square 1
+pop temp 0
+push constant 0
+return 
+function SquareGame.moveSquare 2
+push argument 0
+pop pointer 0
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+call square.moveUp 0
+pop temp 0
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+call square.moveDown 0
+pop temp 0
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+call square.moveLeft 0
+pop temp 0
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+call square.moveRight 0
+pop temp 0
+call Sys.direction 1
+pop temp 0
+push constant 0
+return 
+function SquareGame.run 4
+push argument 0
+pop pointer 0
+label WHILE_EXP0
+not
+if-goto WHILE_END0
+label WHILE_EXP1
+not
+if-goto WHILE_END1
+add
+push constant 17
+add
+push constant 12
+add
+push constant 2
+call String.new 1
+push constant 111
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+call f.fa 1
+add
+call SquareGame.f 0
+call SquareGame.moveSquare 0
+pop temp 0
+goto WHILE_EXP1
+label WHILE_END1
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+call square.decSize 0
+pop temp 0
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+call square.incSize 0
+pop temp 0
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
+if-goto IF_TRUE9
+goto IF_FALSE9
+label IF_TRUE9
+if-goto IF_TRUE10
+goto IF_FALSE10
+label IF_TRUE10
+label WHILE_EXP2
+not
+if-goto WHILE_END2
+call SquareGame.moveSquare 0
+pop temp 0
+goto WHILE_EXP2
+label WHILE_END2
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return 
