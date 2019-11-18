@@ -3,14 +3,16 @@ package Compilador;
 import java.util.*;
 
 public class SymbolTable {
-    Map<String, List<String>> symboltable;
+    public static Map<String, List<String>> symboltable;
+    int scope;
 
     SymbolTable(){
-        startSubroutine();
+        symboltable = new HashMap<String, List<String>>();
+        scope = -1;
     }
 
     public void startSubroutine(){
-        symboltable = new HashMap<String, List<String>>();
+        scope++;
     }
 
     public void define(String name, String type, String kind){
@@ -19,6 +21,7 @@ public class SymbolTable {
         List<String> t = new ArrayList<String>();
         List<String> k = new ArrayList<String>();
         List<String> i = new ArrayList<String>();
+        List<String> s = new ArrayList<String>();
 
         if(symboltable.get("name") != null)
             n.addAll(symboltable.get("name"));
@@ -28,28 +31,49 @@ public class SymbolTable {
             k.addAll(symboltable.get("kind"));
         if(symboltable.get("index") != null)
             i.addAll(symboltable.get("index"));
+        if(symboltable.get("scope") != null)
+            s.addAll(symboltable.get("scope"));
 
         n.add(name);
         t.add(type);
         k.add(kind);
-        i.add(countKind(kind));
+        s.add(""+scope);
+        String ind = countKind(kind);
+        i.add(ind);
 
         symboltable.put("name",n);
         symboltable.put("type",t);
         symboltable.put("kind",k);
         symboltable.put("index",i);
+        symboltable.put("scope",s);
     }
 
     private String countKind (String kind){
-        List <String> k = symboltable.get("kind");
         int i = -1;
-
-        for(String s:k){
-            if(s == kind){
-                i++;
+        List<String> k,s;
+        k = symboltable.get("kind");
+        s = symboltable.get("scope");
+        if(k == null){
+            k = new ArrayList<String>();
+        }
+        if(s == null){
+            s = new ArrayList<String>();
+        }
+        if(k.size() == 1){
+            if(s.get(0).contains(""+scope)){
+                if(k.get(0).contains(kind)){
+                    i++;
+                }
+            }
+        }else{
+            for(int j = 0; j<k.size(); j++){
+                if(s.get(j).contains(""+scope)){
+                    if(k.get(j).contains(kind)){
+                        i++;
+                    }
+                }
             }
         }
-
         return "" + (i + 1);
     }
 

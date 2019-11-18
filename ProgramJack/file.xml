@@ -6,10 +6,14 @@
       <keyword>field</keyword>
       <identifier>Square</identifier>
       <identifier>square</identifier>
+      <symbol>,</symbol>
+      <identifier>o</identifier>
       <symbol>;</symbol>
       <keyword>field</keyword>
       <keyword>int</keyword>
       <identifier>direction</identifier>
+      <symbol>,</symbol>
+      <identifier>a</identifier>
       <symbol>;</symbol>
       </classVarDec>
       <subroutineDec>
@@ -18,6 +22,11 @@
       <identifier>new</identifier>
       <symbol>(</symbol>
       <parameterList>
+       <keyword>int</keyword>
+       <identifier>a</identifier>
+       <symbol>,</symbol>
+       <keyword>char</keyword>
+       <identifier>c</identifier>
        </parameterList>
       <symbol>)</symbol>
       <subroutineBody>
@@ -64,6 +73,11 @@
       <identifier>dispose</identifier>
       <symbol>(</symbol>
       <parameterList>
+       <keyword>int</keyword>
+       <identifier>a</identifier>
+       <symbol>,</symbol>
+       <keyword>int</keyword>
+       <identifier>b</identifier>
        </parameterList>
       <symbol>)</symbol>
       <subroutineBody>
@@ -110,6 +124,8 @@
       <identifier>moveSquare</identifier>
       <symbol>(</symbol>
       <parameterList>
+       <keyword>int</keyword>
+       <identifier>a</identifier>
        </parameterList>
       <symbol>)</symbol>
       <subroutineBody>

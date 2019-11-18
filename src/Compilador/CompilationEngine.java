@@ -1,14 +1,21 @@
 package Compilador;
 
+
 public class CompilationEngine {
     JackTokenizer tokenizer;
     private String local;
+    VMWriter vm;
+    SymbolTable st;
+    String classname;
 
     public CompilationEngine(String path){
         tokenizer = new JackTokenizer(path);
         local = path;
+        vm = new VMWriter(path);
+        st = new SymbolTable();
         compileClass();
     }
+
      public void compileClass(){
         String xml = "";
         tokenizer.advance();
@@ -17,6 +24,7 @@ public class CompilationEngine {
             tokenizer.advance();
             if(className(tokenizer.token)){
                 xml += tokenizer.token + "\n    ";
+                classname = tokenizer.identifier(tokenizer.token);
                 tokenizer.advance();
                 if(tokenizer.symbol(tokenizer.token).contains("{")){
                     xml += tokenizer.token + "\n    ";
@@ -54,14 +62,19 @@ public class CompilationEngine {
 
      private String classVarDecAux(){
         String rst ="";
+        String type, kind, name;
         if(tokenizer.keyWord(tokenizer.token).contains("field") | tokenizer.keyWord(tokenizer.token).contains("static")){
             rst += tokenizer.token + "\n      ";
+            kind = tokenizer.keyWord(tokenizer.token);
             tokenizer.advance();
             if(type(tokenizer.token)){
                 rst += tokenizer.token+ "\n      ";
+                type = (tokenizer.tokenType(tokenizer.token).contains("keyword"))?tokenizer.keyWord(tokenizer.token):tokenizer.identifier(tokenizer.token);
                 tokenizer.advance();
                 if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
                     rst += tokenizer.token+ "\n      ";
+                    name = tokenizer.identifier(tokenizer.token);
+                    st.define(name,type,kind);
                     tokenizer.advance();
                     if(tokenizer.symbol(tokenizer.token).contains(",")){
                         while (tokenizer.symbol(tokenizer.token).contains(",")){
@@ -69,6 +82,8 @@ public class CompilationEngine {
                             tokenizer.advance();
                             if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
                                 rst += tokenizer.token+ "\n      ";
+                                name = tokenizer.identifier(tokenizer.token);
+                                st.define(name,type,kind);
                                 tokenizer.advance();
                             }
                         }
@@ -88,6 +103,7 @@ public class CompilationEngine {
 
      public String compileClassVarDec(){
         String clas = "<classVarDec>\n      ";
+        st.startSubroutine();
         while (tokenizer.keyWord(tokenizer.token).contains("field") | tokenizer.keyWord(tokenizer.token).contains("static")){
             clas += classVarDecAux();
         }
@@ -122,6 +138,7 @@ public class CompilationEngine {
         String subroutine =  "";
         while (tokenizer.hasMoreTokens() && (tokenizer.keyWord(tokenizer.token).contains("constructor") | tokenizer.keyWord(tokenizer.token).contains("function") | tokenizer.keyWord(tokenizer.token).contains("method"))){
             subroutine +=  "<subroutineDec>\n      ";
+            st.startSubroutine();
             if (tokenizer.keyWord(tokenizer.token).contains("constructor") | tokenizer.keyWord(tokenizer.token).contains("function") | tokenizer.keyWord(tokenizer.token).contains("method")) {
                  subroutine += tokenizer.token + "\n      ";
                  tokenizer.advance();
@@ -159,15 +176,21 @@ public class CompilationEngine {
 
     public String compileParamenterList(){
         String parameter = "<parameterList>\n       ";
+        String name, type, kind;
+        kind = "argument";
+        st.define("this", classname,kind);
         while (tokenizer.hasMoreTokens() && !tokenizer.symbol(tokenizer.token).contains(")")){
             if(type(tokenizer.token)){
-                parameter += tokenizer.token +"\n       ";
+                parameter += tokenizer.token + "\n       ";
+                type = (tokenizer.tokenType(tokenizer.token).contains("keyword"))?tokenizer.keyWord(tokenizer.token):tokenizer.identifier(tokenizer.token);
                 tokenizer.advance();
-                if(tokenizer.symbol(tokenizer.token).contains(",")){
-                    parameter += tokenizer.token +"\n       ";
+                if(varName(tokenizer.token)){
+                    parameter += tokenizer.token + "\n       ";
+                    name = tokenizer.identifier(tokenizer.token);
+                    st.define(name,type,kind);
                     tokenizer.advance();
-                    if(type(tokenizer.token)){
-                        parameter += tokenizer.token +"\n       ";
+                    if(tokenizer.symbol(tokenizer.token).contains(",")){
+                        parameter += tokenizer.token + "\n       ";
                         tokenizer.advance();
                     }
                 }
@@ -204,22 +227,29 @@ public class CompilationEngine {
 
     public String compileVarDec(){
         String varDec = "<varDec>\n         ";
-
+        st.startSubroutine();
+        String type, name, kind;
+        kind = "local";
         if(tokenizer.keyWord(tokenizer.token).contains("var")){
             varDec += tokenizer.token +"\n         ";
             tokenizer.advance();
             if(type(tokenizer.token)){
                varDec += tokenizer.token +"\n         ";
+               type = (tokenizer.tokenType(tokenizer.token).contains("keyword"))?tokenizer.keyWord(tokenizer.token):tokenizer.identifier(tokenizer.token);
                tokenizer.advance();
                 while (tokenizer.hasMoreTokens() && !tokenizer.symbol(tokenizer.token).contains(";")){
                     if(varName(tokenizer.token)){
                         varDec += tokenizer.token +"\n         ";
+                        name = tokenizer.identifier(tokenizer.token);
+                        st.define(name,type,kind);
                         tokenizer.advance();
                         if(tokenizer.symbol(tokenizer.token).contains(",")){
                             varDec += tokenizer.token +"\n         ";
                             tokenizer.advance();
                             if(varName(tokenizer.token)){
                                 varDec += tokenizer.token +"\n         ";
+                                name = tokenizer.identifier(tokenizer.token);
+                                st.define(name,type,kind);
                                 tokenizer.advance();
                             }
                         }
@@ -271,11 +301,16 @@ public class CompilationEngine {
 
     public String compileLet(){
         String let = "<letStatement>\n              ";
+        String name, type, kind;
+        kind = "local";
+        type = "int";
         if(tokenizer.keyWord(tokenizer.token).contains("let")){
             let += tokenizer.token + "\n              ";
             tokenizer.advance();
             if(varName(tokenizer.token)){
                 let += tokenizer.token + "\n              ";
+                name = tokenizer.identifier(tokenizer.token);
+                st.define(name,type,kind);
                 tokenizer.advance();
                 if(tokenizer.symbol(tokenizer.token).contains("[")){
                     let += tokenizer.token + "\n              ";
