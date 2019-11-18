@@ -330,6 +330,7 @@ public class CompilationEngine {
         String name, type, kind;
         kind = "local";
         type = "int";
+        boolean isArray =false;
         if(tokenizer.keyWord(tokenizer.token).contains("let")){
             let += tokenizer.token + "\n              ";
             tokenizer.advance();
@@ -342,8 +343,11 @@ public class CompilationEngine {
                     let += tokenizer.token + "\n              ";
                     tokenizer.advance();
                     let += compileExpression();
+                    vm.writePush(st.kindOf(name),st.indexOf(name));
+                    vm.writeArithmetic("add");
                     if(tokenizer.symbol(tokenizer.token).contains("]")){
                         let += tokenizer.token + "\n              ";
+                        isArray = true;
                         tokenizer.advance();
                     }
                 }
@@ -353,6 +357,14 @@ public class CompilationEngine {
                     tokenizer.advance();
                     let += compileExpression();
 
+                }
+                if(isArray){
+                    vm.writePop("temp",0);
+                    vm.writePop("pointer", 1);
+                    vm.writePush("temp",0);
+                    vm.writePop("that", 0);
+                }else{
+                    vm.writePop(st.kindOf(name),st.indexOf(name));
                 }
                 if(tokenizer.symbol(tokenizer.token).contains(";")){
                         let += tokenizer.token + "\n         ";
@@ -490,6 +502,7 @@ public class CompilationEngine {
             //falta essa parte aqui
             term += tokenizer.token + "\n         ";
             nameAux = tokenizer.identifier(tokenizer.token);
+            String name = nameAux;
             tokenizer.advance();
             if(tokenizer.symbol(tokenizer.token).contains("(")|tokenizer.symbol(tokenizer.token).contains(".")){
                 classname2 = classname;
@@ -499,7 +512,11 @@ public class CompilationEngine {
                     term += tokenizer.token + "\n         ";
                     tokenizer.advance();
                     term += compileExpression();
+                    vm.writePush(st.kindOf(name),st.indexOf(name));
+                    vm.writeArithmetic("add");
                     if(tokenizer.symbol(tokenizer.token).contains("]")){
+                        vm.writePop("pointer", 1);
+                        vm.writePush("that",0);
                         term += tokenizer.token + "\n         ";
                         tokenizer.advance();
                     }else{
@@ -537,6 +554,7 @@ public class CompilationEngine {
 
     private String subroutineCall(){
         String call = "";
+        String ident = nameAux;
         if(tokenizer.symbol(tokenizer.token).contains("(")){
             call += tokenizer.token + "\n       ";
             tokenizer.advance();
@@ -546,7 +564,8 @@ public class CompilationEngine {
             }else{
                 call += "<expressionList>\n        " + "</expressionList>\n        ";
             }
-            vm.writeCall(classname2+"."+nameAux,numArgs);
+            ident = classname2+"."+nameAux;
+            vm.writeCall(ident,numArgs);
             if(tokenizer.symbol(tokenizer.token).contains(")")){
                 call += tokenizer.token + "\n       ";
                 tokenizer.advance();
@@ -562,8 +581,11 @@ public class CompilationEngine {
                     call += tokenizer.token + "\n       ";
                     classname2 = nameAux;
                     nameAux = tokenizer.identifier(tokenizer.token);
+                    vm.writePush(nameAux,st.indexOf(nameAux));
+                    ident = st.typeOf(nameAux) + "." + nameAux;
                     tokenizer.advance();
                     call += subroutineCall();
+                    numArgs++;
                 }else{
                     System.out.println("Esperado identifier");
                     imprime_erro();
@@ -572,6 +594,7 @@ public class CompilationEngine {
                 System.out.println("Esperado . ou (");
                 imprime_erro();
             }
+            vm.writeCall(ident,numArgs);
         }
         return call;
     }

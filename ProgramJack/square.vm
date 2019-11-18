@@ -5,33 +5,49 @@ function Square.new 1
 push constant 0
 call Memory.alloc 1
 pop pointer 0
+pop local 1
+pop local 2
+pop local 3
+push calc -1
 call Square.calc 0
+call .calc 1
+pop local 4
 call Square.draw 0
 pop temp 0
 push pointer 0
 function Square.dispose 5
 push argument 0
 pop pointer 0
+push deAlloc -1
 push pointer 0
 call Memory.deAlloc 1
+call .deAlloc 2
 pop temp 0
 push constant 0
 return 
 function Square.draw 5
 push argument 0
 pop pointer 0
+push setColor -1
 call Screen.x 1
+call .setColor 2
 pop temp 0
+push drawRectangle -1
 call Screen.y 4
+call .drawRectangle 5
 pop temp 0
 push constant 0
 return 
 function Square.erase 5
 push argument 0
 pop pointer 0
+push setColor -1
 call Screen.x 1
+call .setColor 2
 pop temp 0
+push drawRectangle -1
 call Screen.y 4
+call .drawRectangle 5
 pop temp 0
 push constant 0
 return 
@@ -43,6 +59,7 @@ goto IF_FALSE0
 label IF_TRUE0
 call Square.erase 0
 pop temp 0
+pop local 0
 call Square.draw 0
 pop temp 0
 push constant 0
@@ -55,6 +72,7 @@ goto IF_FALSE1
 label IF_TRUE1
 call Square.erase 0
 pop temp 0
+pop local 0
 call Square.draw 0
 pop temp 0
 push constant 0
@@ -65,13 +83,22 @@ pop pointer 0
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
+push setColor -1
 call Screen.x 1
+call .setColor 2
 pop temp 0
+push drawRectangle -1
 call Screen.y 4
+call .drawRectangle 5
 pop temp 0
+pop local 0
+push setColor -1
 call Screen.x 1
+call .setColor 2
 pop temp 0
+push drawRectangle -1
 call Screen.y 4
+call .drawRectangle 5
 pop temp 0
 push constant 0
 return 
@@ -81,13 +108,22 @@ pop pointer 0
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
+push setColor -1
 call Screen.x 1
+call .setColor 2
 pop temp 0
+push drawRectangle -1
 call Screen.y 4
+call .drawRectangle 5
 pop temp 0
+pop local 0
+push setColor -1
 call Screen.x 1
+call .setColor 2
 pop temp 0
+push drawRectangle -1
 call Screen.y 4
+call .drawRectangle 5
 pop temp 0
 push constant 0
 return 
@@ -97,13 +133,22 @@ pop pointer 0
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
+push setColor -1
 call Screen.x 1
+call .setColor 2
 pop temp 0
+push drawRectangle -1
 call Screen.y 4
+call .drawRectangle 5
 pop temp 0
+pop local 0
+push setColor -1
 call Screen.x 1
+call .setColor 2
 pop temp 0
+push drawRectangle -1
 call Screen.y 4
+call .drawRectangle 5
 pop temp 0
 push constant 0
 return 
@@ -113,13 +158,22 @@ pop pointer 0
 if-goto IF_TRUE5
 goto IF_FALSE5
 label IF_TRUE5
+push setColor -1
 call Screen.x 1
+call .setColor 2
 pop temp 0
+push drawRectangle -1
 call Screen.y 4
+call .drawRectangle 5
 pop temp 0
+pop local 0
+push setColor -1
 call Screen.x 1
+call .setColor 2
 pop temp 0
+push drawRectangle -1
 call Screen.y 4
+call .drawRectangle 5
 pop temp 0
 push constant 0
 return 

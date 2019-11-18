@@ -2,13 +2,19 @@ function SquareGame.new 0
 push constant 0
 call Memory.alloc 1
 pop pointer 0
+pop local 0
+pop local 1
 return 
 function SquareGame.dispose 2
 push argument 0
 pop pointer 0
+push dispose -1
 call square.dispose 0
+call .dispose 1
 pop temp 0
+push deAlloc -1
 call Memory.square 1
+call .deAlloc 2
 pop temp 0
 push constant 0
 return 
@@ -18,30 +24,41 @@ pop pointer 0
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
+push moveUp -1
 call square.moveUp 0
+call .moveUp 1
 pop temp 0
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
+push moveDown -1
 call square.moveDown 0
+call .moveDown 1
 pop temp 0
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
+push moveLeft -1
 call square.moveLeft 0
+call .moveLeft 1
 pop temp 0
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
+push moveRight -1
 call square.moveRight 0
+call .moveRight 1
 pop temp 0
+push wait -1
 call Sys.direction 1
+call .wait 2
 pop temp 0
 push constant 0
 return 
 function SquareGame.run 4
 push argument 0
 pop pointer 0
+pop local 1
 label WHILE_EXP0
 not
 if-goto WHILE_END0
@@ -50,7 +67,12 @@ not
 if-goto WHILE_END1
 add
 push constant 17
+push  -1
 add
+pop pointer 1
+push that 0
+add
+push fa -1
 push constant 12
 add
 push constant 2
@@ -60,8 +82,10 @@ call String.appendChar 2
 push constant 105
 call String.appendChar 2
 call f.fa 1
+call .fa 2
 add
 call SquareGame.f 0
+pop local 2
 call SquareGame.moveSquare 0
 pop temp 0
 goto WHILE_EXP1
@@ -69,31 +93,41 @@ label WHILE_END1
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
+pop local 3
 if-goto IF_TRUE5
 goto IF_FALSE5
 label IF_TRUE5
+push decSize -1
 call square.decSize 0
+call .decSize 1
 pop temp 0
 if-goto IF_TRUE6
 goto IF_FALSE6
 label IF_TRUE6
+push incSize -1
 call square.incSize 0
+call .incSize 1
 pop temp 0
 if-goto IF_TRUE7
 goto IF_FALSE7
 label IF_TRUE7
+pop local 4
 if-goto IF_TRUE8
 goto IF_FALSE8
 label IF_TRUE8
+pop local 5
 if-goto IF_TRUE9
 goto IF_FALSE9
 label IF_TRUE9
+pop local 6
 if-goto IF_TRUE10
 goto IF_FALSE10
 label IF_TRUE10
+pop local 7
 label WHILE_EXP2
 not
 if-goto WHILE_END2
+pop local 8
 call SquareGame.moveSquare 0
 pop temp 0
 goto WHILE_EXP2

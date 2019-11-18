@@ -140,4 +140,17 @@ public class SymbolTable {
         return rst;
     }
 
+//    public String resolve (String name){
+//        List<String> names = symboltable.get("name");
+//        List<String> sco = symboltable.get("scope");
+//        String rst = "";
+//        for(int i = 0; i<names.size();i++){
+//            if (names.get(i).contains(name)){
+//                rst = sco.get(i);
+//                break;
+//            }
+//        }
+//        return rst;
+//    }
+
 }
