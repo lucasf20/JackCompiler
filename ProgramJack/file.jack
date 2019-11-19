@@ -6,22 +6,22 @@
 /** Expressionless version of projects/10/Square/SquareGame.jack. */
 
 class SquareGame {
-   field Square square;
-   field int direction;
+   field Square square,o;
+   field int direction, a;
 
-   constructor SquareGame new() {
+   constructor SquareGame new(int a, char c) {
       let square = square;
       let direction = direction;
       return square;
    }
 
-   method void dispose(){
+   method void dispose(int a, int b){
       do square.dispose();
       do Memory.deAlloc(square);
       return;
    }
 
-   method void moveSquare() {
+   method void moveSquare(int a) {
       if (direction) { do square.moveUp(); }
       if (direction) { do square.moveDown(); }
       if (direction) { do square.moveLeft(); }
