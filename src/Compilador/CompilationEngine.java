@@ -343,7 +343,7 @@ public class CompilationEngine {
                     let += tokenizer.token + "\n              ";
                     tokenizer.advance();
                     let += compileExpression();
-                    vm.writePush(st.kindOf(name),st.indexOf(name));
+                    vm.writePush(scopeToSegment(st.kindOf(name)),st.indexOf(name));
                     vm.writeArithmetic("add");
                     if(tokenizer.symbol(tokenizer.token).contains("]")){
                         let += tokenizer.token + "\n              ";
@@ -364,7 +364,7 @@ public class CompilationEngine {
                     vm.writePush("temp",0);
                     vm.writePop("that", 0);
                 }else{
-                    vm.writePop(st.kindOf(name),st.indexOf(name));
+                    vm.writePop(scopeToSegment(st.kindOf(name)),st.indexOf(name));
                 }
                 if(tokenizer.symbol(tokenizer.token).contains(";")){
                         let += tokenizer.token + "\n         ";
@@ -512,7 +512,7 @@ public class CompilationEngine {
                     term += tokenizer.token + "\n         ";
                     tokenizer.advance();
                     term += compileExpression();
-                    vm.writePush(st.kindOf(name),st.indexOf(name));
+                    vm.writePush(scopeToSegment(st.kindOf(name)),st.indexOf(name));
                     vm.writeArithmetic("add");
                     if(tokenizer.symbol(tokenizer.token).contains("]")){
                         vm.writePop("pointer", 1);
@@ -524,6 +524,9 @@ public class CompilationEngine {
                         imprime_erro();
                     }
                 }
+            }
+            if(!tokenizer.symbol(tokenizer.token).contains("(")&&!tokenizer.symbol(tokenizer.token).contains(".")&&!tokenizer.symbol(tokenizer.token).contains("[")){
+                vm.writePush(scopeToSegment(st.kindOf(name)),st.indexOf(name));
             }
         }
         if(tokenizer.symbol(tokenizer.token).contains("(")){
@@ -581,7 +584,7 @@ public class CompilationEngine {
                     call += tokenizer.token + "\n       ";
                     classname2 = nameAux;
                     nameAux = tokenizer.identifier(tokenizer.token);
-                    vm.writePush(nameAux,st.indexOf(nameAux));
+                    vm.writePush(nameAux,st.indexOf(tokenizer.identifier(tokenizer.token)));
                     ident = st.typeOf(nameAux) + "." + nameAux;
                     tokenizer.advance();
                     call += subroutineCall();
@@ -824,5 +827,13 @@ public class CompilationEngine {
         }
         System.out.println("Linha: " + linha);
         System.exit(-1);
+    }
+
+    private String scopeToSegment(String sc){
+        if(sc.contains("field")){
+            return "this";
+        }else{
+            return sc;
+        }
     }
 }

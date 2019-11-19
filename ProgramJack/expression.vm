@@ -1,6 +1,7 @@
 function Expression.main 1
 push argument 0
 pop pointer 0
+push local 0
 eq
 push constant 10
 if-goto IF_TRUE0
@@ -18,6 +19,7 @@ return
 function Expression.main2 4
 push argument 0
 pop pointer 0
+push local 0
 eq
 push constant 10
 if-goto IF_TRUE1
