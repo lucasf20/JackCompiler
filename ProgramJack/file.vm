@@ -59,13 +59,13 @@ call Sys.wait 1
 pop temp 0
 push constant 0
 return
-function SquareGame.run 1
+function SquareGame.run 2
 push argument 0
 pop pointer 0
 push local 0
-pop local 0
+pop local 1
 label WHILE_EXP0
-push local 0
+push local 1
 not
 if-goto WHILE_END0
 label WHILE_EXP1
@@ -103,8 +103,8 @@ push local 0
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
-push local 0
-pop local 0
+push local 1
+pop local 1
 label IF_FALSE4
 push local 0
 if-goto IF_TRUE5
@@ -126,7 +126,7 @@ push local 0
 if-goto IF_TRUE7
 goto IF_FALSE7
 label IF_TRUE7
-push local 0
+push local 1
 pop this 2
 label IF_FALSE7
 push local 0

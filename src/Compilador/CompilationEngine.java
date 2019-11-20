@@ -1,4 +1,5 @@
 package Compilador;
+//Verificar auxExp
 
 public class CompilationEngine {
     JackTokenizer tokenizer;
@@ -249,7 +250,7 @@ public class CompilationEngine {
 
     public String compileVarDec(){
         String varDec = "<varDec>\n         ";
-        st.startSubroutine();
+        //st.startSubroutine();
         String type, name, kind;
         kind = "local";
         if(tokenizer.keyWord(tokenizer.token).contains("var")){
@@ -384,6 +385,7 @@ public class CompilationEngine {
     }
 
     private String auxExp(){
+        //verificar este metodo
         String e = "";
         if(isTerm()){
             e += compileTerm();
