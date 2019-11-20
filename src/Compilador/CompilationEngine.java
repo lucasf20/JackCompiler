@@ -1,8 +1,4 @@
 package Compilador;
-//falta fazer:
-//compileTerm para Identifier
-//compileSubRoutineCall
-//compileLet
 
 public class CompilationEngine {
     JackTokenizer tokenizer;
@@ -53,7 +49,7 @@ public class CompilationEngine {
         if(!tokenizer.hasMoreTokens()){
             xml += "</class>";
             vm.close();
-            System.out.println(xml);
+//            System.out.println(xml);
             TextTools.escreverXML(xml, local);
         }
         else{
@@ -192,7 +188,7 @@ public class CompilationEngine {
         String parameter = "<parameterList>\n       ";
         String name, type, kind;
         kind = "argument";
-        st.define("this", classname,kind);
+//        st.define("this", classname,kind);
         while (tokenizer.hasMoreTokens() && !tokenizer.symbol(tokenizer.token).contains(")")){
             if(type(tokenizer.token)){
                 parameter += tokenizer.token + "\n       ";
@@ -558,46 +554,78 @@ public class CompilationEngine {
     private String subroutineCall(){
         String call = "";
         String ident = nameAux;
+        numArgs = 0;
         if(tokenizer.symbol(tokenizer.token).contains("(")){
             call += tokenizer.token + "\n       ";
+            vm.writePush("pointer",0);
             tokenizer.advance();
-            numArgs = 0;
             if(!tokenizer.symbol(tokenizer.token).contains(")")){
                 call += compileExpressionList();
             }else{
                 call += "<expressionList>\n        " + "</expressionList>\n        ";
-            }
-            ident = classname2+"."+nameAux;
-            vm.writeCall(ident,numArgs);
-            if(tokenizer.symbol(tokenizer.token).contains(")")){
                 call += tokenizer.token + "\n       ";
+                numArgs++;
+                vm.writeCall(classname +"."+ident, numArgs);
                 tokenizer.advance();
-            }else{
-                System.out.println("Esperado )");
-                imprime_erro();
+            }
+            if(tokenizer.symbol(tokenizer.token).contains((")"))){
+                call += tokenizer.token + "\n       ";
+                ident = classname + "." + ident;
+                numArgs++;
+                vm.writeCall(ident,numArgs);
+                tokenizer.advance();
             }
         }else{
-            if (tokenizer.symbol(tokenizer.token).contains(".")){
+            if(tokenizer.symbol(tokenizer.token).contains(".")){
                 call += tokenizer.token + "\n       ";
                 tokenizer.advance();
-                if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
-                    call += tokenizer.token + "\n       ";
-                    classname2 = nameAux;
-                    nameAux = tokenizer.identifier(tokenizer.token);
-                    vm.writePush(nameAux,st.indexOf(tokenizer.identifier(tokenizer.token)));
-                    ident = st.typeOf(nameAux) + "." + nameAux;
-                    tokenizer.advance();
-                    call += subroutineCall();
-                    numArgs++;
+                if(st.indexOf(ident) != -1){
+                    vm.writePush(scopeToSegment(st.kindOf(ident)),st.indexOf(ident));
+                    if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
+                        call += tokenizer.token + "\n       ";
+                        ident = st.typeOf(nameAux) + "." + tokenizer.identifier(tokenizer.token);
+                        tokenizer.advance();
+                        if(tokenizer.symbol(tokenizer.token).contains("(")){
+                            call += tokenizer.token + "\n       ";
+                            tokenizer.advance();
+                            if(!tokenizer.symbol(tokenizer.token).contains(")")){
+                                call += compileExpressionList();
+                                numArgs++;
+                            }else{
+                                call += "<expressionList>\n        " + "</expressionList>\n        ";
+                                call += tokenizer.token + "\n       ";
+                                vm.writeCall(ident, numArgs);
+                                tokenizer.advance();
+                            }
+                        }
+                    }
                 }else{
-                    System.out.println("Esperado identifier");
-                    imprime_erro();
+                    if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
+                        call += tokenizer.token + "\n       ";
+                        ident = ident + "." + tokenizer.identifier(tokenizer.token);
+                        tokenizer.advance();
+                        if(tokenizer.symbol(tokenizer.token).contains("(")){
+                            call += tokenizer.token + "\n       ";
+                            tokenizer.advance();
+                            if(!tokenizer.symbol(tokenizer.token).contains(")")){
+                                call += compileExpressionList();
+                                numArgs++;
+                            }else{
+                                call += "<expressionList>\n        " + "</expressionList>\n        ";
+                                call += tokenizer.token + "\n       ";
+                                vm.writeCall(ident, numArgs);
+                                tokenizer.advance();
+                            }
+                        }
+                    }
                 }
-            }else{
-                System.out.println("Esperado . ou (");
-                imprime_erro();
+                if(tokenizer.symbol(tokenizer.token).contains(")")){
+                    call += tokenizer.token + "\n       ";
+                    numArgs--;
+                    vm.writeCall(ident, numArgs);
+                    tokenizer.advance();
+                }
             }
-            vm.writeCall(ident,numArgs);
         }
         return call;
     }
@@ -693,7 +721,7 @@ public class CompilationEngine {
             }
             else{
                 aux = compileExpression();
-                if(aux.contains("intConst")|aux.contains("identifier")){
+                if(aux.contains("intConst")|aux.contains("identifier")|aux.contains("this")){
                     ret += aux;
                     //tokenizer.advance();
                     if(tokenizer.symbol(tokenizer.token).contains(";")){
@@ -741,7 +769,6 @@ public class CompilationEngine {
                             if(tokenizer.keyWord(tokenizer.token).contains("else")){
                                 ife += tokenizer.token + "\n           ";
                                 vm.writeGoTo(labelEnd);
-                                vm.writeLabel(labelFalse);
                                 tokenizer.advance();
                                 if(tokenizer.symbol(tokenizer.token).contains("{")){
                                     ife += tokenizer.token + "\n           ";
@@ -758,6 +785,7 @@ public class CompilationEngine {
                                     }
                                 }
                             }
+                            vm.writeLabel(labelFalse);
                         }else{
                             System.out.println("Esperado }");
                             imprime_erro();
@@ -825,6 +853,7 @@ public class CompilationEngine {
         if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
             System.out.println("Erro proximo a: " +  tokenizer.identifier(tokenizer.token));
         }
+        System.out.println("No arquivo: "+local);
         System.out.println("Linha: " + linha);
         System.exit(-1);
     }

@@ -124,7 +124,13 @@
       </doStatement>
        <returnStatement>
            <keyword>return</keyword>
-           </returnStatement>
+           <expression>
+            <term>
+         <keyword>this</keyword>
+         </term>
+         </expression>
+            <symbol>;</symbol>
+       </returnStatement>
         </statements>
       <symbol>}</symbol>
        </subroutineBody>

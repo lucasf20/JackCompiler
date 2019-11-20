@@ -24,7 +24,9 @@ public class VMWriter {
     }
 
     public void writePush(String segment, int index){
-        codigo += "push " + segment + " " + index + "\n";
+        if(index != -1) {
+            codigo += "push " + segment + " " + index + "\n";
+        }
     }
 
     public void writePop(String segment, int index){
@@ -56,7 +58,7 @@ public class VMWriter {
     }
 
     public void writeReturn(){
-        codigo += "return \n";
+        codigo += "return\n";
     }
 
     public void close(){

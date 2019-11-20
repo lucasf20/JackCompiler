@@ -80,33 +80,38 @@ public class SymbolTable {
     public int varCount(String kind){
         int number = 0;
         List<String> values = symboltable.get("kind");
-        String[] val = new String[values.size()];
-        val = values.toArray(val);
-
-        for(String v:val){
-            if(v.contains(kind)){
-                number++;
+        List<String> escopo = symboltable.get("scope");
+        if (values != null && escopo != null){
+            for(int j = 0; j<values.size(); j++){
+                if(values.get(j).contains(kind) && escopo.get(j).contains(""+scope)){
+                    number++;
+                }
             }
+            return number;
+        }else{
+            return 0;
         }
-
-        return number;
     }
 
     public String kindOf(String name){
         String rst = "";
         List<String> names = symboltable.get("name");
         List<String> kinds = symboltable.get("kind");
-        String[] n = new String[names.size()];
-        String[] k = new String[kinds.size()];
-        n = names.toArray(n);
-        k = kinds.toArray(k);
-        for(int i = 0; i < n.length; i++){
-            if(n[i].contains(name)){
-                rst = k[i];
-                break;
+        if(names != null && kinds != null){
+            String[] n = new String[names.size()];
+            String[] k = new String[kinds.size()];
+            n = names.toArray(n);
+            k = kinds.toArray(k);
+            for(int i = 0; i < n.length; i++){
+                if(n[i].contains(name)){
+                    rst = k[i];
+                    break;
+                }
             }
+            return rst;
+        }else{
+            return "";
         }
-        return rst;
     }
 
     public String typeOf(String name){
@@ -114,15 +119,17 @@ public class SymbolTable {
 
         List<String> names = symboltable.get("name");
         List<String> types = symboltable.get("type");
-
-        for(int i =0; i < names.size(); i++){
-            if(names.get(i).contains(name)){
-                rst = types.get(i);
-                break;
+        if(names != null && types != null) {
+            for (int i = 0; i < names.size(); i++) {
+                if (names.get(i).contains(name)) {
+                    rst = types.get(i);
+                    break;
+                }
             }
+            return rst;
+        }else{
+            return "";
         }
-
-        return rst;
     }
 
     public int indexOf(String name){
@@ -130,14 +137,18 @@ public class SymbolTable {
         List<String> names = symboltable.get("name");
         List<String> indexes = symboltable.get("index");
 
-        for(int i =0; i < names.size(); i++){
-            if(names.get(i).contains(name)){
-                rst = Integer.parseInt(indexes.get(i));
-                break;
+        if(names != null && indexes != null){
+            for(int i =0; i < names.size(); i++){
+                if(names.get(i).contains(name)){
+                    rst = Integer.parseInt(indexes.get(i));
+                    break;
+                }
             }
-        }
 
-        return rst;
+            return rst;
+        }else{
+            return 0;
+        }
     }
 
 //    public String resolve (String name){
