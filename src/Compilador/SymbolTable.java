@@ -83,8 +83,14 @@ public class SymbolTable {
         List<String> escopo = symboltable.get("scope");
         if (values != null && escopo != null){
             for(int j = 0; j<values.size(); j++){
-                if(values.get(j).contains(kind) && escopo.get(j).contains(""+scope)){
-                    number++;
+                if(kind.contains("field") | kind.contains("static")){
+                   if(values.get(j).contains(kind)){
+                       number++;
+                   }
+                }else{
+                    if(values.get(j).contains(kind) && escopo.get(j).contains(""+scope)){
+                        number++;
+                    }
                 }
             }
             return number;

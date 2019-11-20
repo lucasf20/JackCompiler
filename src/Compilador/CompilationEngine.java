@@ -49,7 +49,7 @@ public class CompilationEngine {
         if(!tokenizer.hasMoreTokens()){
             xml += "</class>";
             vm.close();
-//            System.out.println(xml);
+            System.out.println(xml);
             TextTools.escreverXML(xml, local);
         }
         else{
