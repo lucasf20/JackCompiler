@@ -14,6 +14,7 @@ public class CompilationEngine {
     String classname2;
     int ifLabelNum = 0;
     int whileLabelNum = 0;
+    String operator = "";
 
     public CompilationEngine(String path){
         tokenizer = new JackTokenizer(path);
@@ -391,38 +392,39 @@ public class CompilationEngine {
             e += compileTerm();
             if(tokenizer.hasMoreTokens() && op(tokenizer.token)){
                 e += tokenizer.token + "\n            ";
-                switch (tokenizer.symbol(tokenizer.token)){
-                    case "+":
-                        vm.writeArithmetic("add");
-                        break;
-                    case "-":
-                        vm.writeArithmetic("sub");
-                        break;
-                    case "*":
-                        vm.writeCall("Math.multiply",2);
-                        break;
-                    case "/":
-                        vm.writeCall("Math.divide",2);
-                        break;
-                    case "&":
-                        vm.writeArithmetic("and");
-                        break;
-                    case "|":
-                        vm.writeArithmetic("or");
-                        break;
-                    case "<":
-                        vm.writeArithmetic("lt");
-                        break;
-                    case ">":
-                        vm.writeArithmetic("gt");
-                        break;
-                    case "=":
-                        vm.writeArithmetic("eq");
-                        break;
-                    case "~":
-                        vm.writeArithmetic("not");
-                        break;
-                }
+                operator = tokenizer.symbol(tokenizer.token);
+//                switch (tokenizer.symbol(tokenizer.token)){
+//                    case "+":
+//                        vm.writeArithmetic("add");
+//                        break;
+//                    case "-":
+//                        vm.writeArithmetic("sub");
+//                        break;
+//                    case "*":
+//                        vm.writeCall("Math.multiply",2);
+//                        break;
+//                    case "/":
+//                        vm.writeCall("Math.divide",2);
+//                        break;
+//                    case "&":
+//                        vm.writeArithmetic("and");
+//                        break;
+//                    case "|":
+//                        vm.writeArithmetic("or");
+//                        break;
+//                    case "<":
+//                        vm.writeArithmetic("lt");
+//                        break;
+//                    case ">":
+//                        vm.writeArithmetic("gt");
+//                        break;
+//                    case "=":
+//                        vm.writeArithmetic("eq");
+//                        break;
+//                    case "~":
+//                        vm.writeArithmetic("not");
+//                        break;
+//                }
                 tokenizer.advance();
                 e += auxExp();
             }
@@ -430,9 +432,48 @@ public class CompilationEngine {
         return e;
     }
 
+    private void checkOperator(){
+        if(!operator.isEmpty()){
+            switch (operator){
+                case "+":
+                    vm.writeArithmetic("add");
+                    break;
+                case "-":
+                    vm.writeArithmetic("sub");
+                    break;
+                case "*":
+                    vm.writeCall("Math.multiply",2);
+                    break;
+                case "/":
+                    vm.writeCall("Math.divide",2);
+                    break;
+                case "&":
+                    vm.writeArithmetic("and");
+                    break;
+                case "|":
+                    vm.writeArithmetic("or");
+                    break;
+                case "<":
+                    vm.writeArithmetic("lt");
+                    break;
+                case ">":
+                    vm.writeArithmetic("gt");
+                    break;
+                case "=":
+                    vm.writeArithmetic("eq");
+                    break;
+                case "~":
+                    vm.writeArithmetic("not");
+                    break;
+            }
+        }
+    }
+
     public String compileExpression(){
         String exp = "<expression>\n            ";
+        operator = "";
         exp += auxExp();
+        operator = "";
         exp += "</expression>\n            ";
         return exp;
     }
@@ -550,6 +591,7 @@ public class CompilationEngine {
             term += compileTerm();
         }
         term += "</term>\n         ";
+        checkOperator();
         return term;
     }
 

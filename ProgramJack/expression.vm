@@ -2,8 +2,8 @@ function Expression.main 1
 push argument 0
 pop pointer 0
 push local 0
-eq
 push constant 10
+eq
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
@@ -20,8 +20,8 @@ function Expression.main2 1
 push argument 0
 pop pointer 0
 push local 0
-eq
 push constant 10
+eq
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1

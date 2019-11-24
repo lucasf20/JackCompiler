@@ -73,26 +73,24 @@ push local 0
 not
 if-goto WHILE_END1
 push local 0
-add
 push constant 17
 push this 0
 add
 pop pointer 1
 push that 0
 push this 0
-add
 push constant 12
-add
 push constant 2
 call String.new 1
 push constant 111
 call String.appendChar 2
 push constant 105
 call String.appendChar 2
-call f.fa 1
 add
+call f.fa 1
 push pointer 0
 call SquareGame.f 1
+add
 pop local 0
 push pointer 0
 call SquareGame.moveSquare 1
