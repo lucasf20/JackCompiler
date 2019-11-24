@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="05df82ab-b3c9-49c4-b8c2-5e2594c2d707" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/ProgramJack/expression.vm" beforeDir="false" afterPath="$PROJECT_DIR$/ProgramJack/expression.vm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProgramJack/file.vm" beforeDir="false" afterPath="$PROJECT_DIR$/ProgramJack/file.vm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProgramJack/main.vm" beforeDir="false" afterPath="$PROJECT_DIR$/ProgramJack/main.vm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compilador/CompilationEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compilador/CompilationEngine.java" afterDir="false" />

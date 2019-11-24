@@ -340,7 +340,9 @@ public class CompilationEngine {
                 if(tokenizer.symbol(tokenizer.token).contains("[")){
                     let += tokenizer.token + "\n              ";
                     tokenizer.advance();
+                    String ops = operator;
                     let += compileExpression();
+                    operator = ops;
                     vm.writePush(scopeToSegment(st.kindOf(name)),st.indexOf(name));
                     vm.writeArithmetic("add");
                     if(tokenizer.symbol(tokenizer.token).contains("]")){
@@ -353,7 +355,9 @@ public class CompilationEngine {
                 if(tokenizer.symbol(tokenizer.token).contains("=")){
                     let += tokenizer.token + "\n              ";
                     tokenizer.advance();
+                    String ops = operator;
                     let += compileExpression();
+                    operator = ops;
 
                 }
                 if(isArray){
@@ -393,38 +397,6 @@ public class CompilationEngine {
             if(tokenizer.hasMoreTokens() && op(tokenizer.token)){
                 e += tokenizer.token + "\n            ";
                 operator = tokenizer.symbol(tokenizer.token);
-//                switch (tokenizer.symbol(tokenizer.token)){
-//                    case "+":
-//                        vm.writeArithmetic("add");
-//                        break;
-//                    case "-":
-//                        vm.writeArithmetic("sub");
-//                        break;
-//                    case "*":
-//                        vm.writeCall("Math.multiply",2);
-//                        break;
-//                    case "/":
-//                        vm.writeCall("Math.divide",2);
-//                        break;
-//                    case "&":
-//                        vm.writeArithmetic("and");
-//                        break;
-//                    case "|":
-//                        vm.writeArithmetic("or");
-//                        break;
-//                    case "<":
-//                        vm.writeArithmetic("lt");
-//                        break;
-//                    case ">":
-//                        vm.writeArithmetic("gt");
-//                        break;
-//                    case "=":
-//                        vm.writeArithmetic("eq");
-//                        break;
-//                    case "~":
-//                        vm.writeArithmetic("not");
-//                        break;
-//                }
                 tokenizer.advance();
                 e += auxExp();
             }
@@ -538,6 +510,7 @@ public class CompilationEngine {
             }
         }
         if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
+            boolean chk = true;
             //falta essa parte aqui
             term += tokenizer.token + "\n         ";
             nameAux = tokenizer.identifier(tokenizer.token);
@@ -550,7 +523,9 @@ public class CompilationEngine {
                 if(tokenizer.symbol(tokenizer.token).contains("[")){
                     term += tokenizer.token + "\n         ";
                     tokenizer.advance();
+                    String ops = operator;
                     term += compileExpression();
+                    operator = ops;
                     vm.writePush(scopeToSegment(st.kindOf(name)),st.indexOf(name));
                     vm.writeArithmetic("add");
                     if(tokenizer.symbol(tokenizer.token).contains("]")){
@@ -558,20 +533,23 @@ public class CompilationEngine {
                         vm.writePush("that",0);
                         term += tokenizer.token + "\n         ";
                         tokenizer.advance();
+                        chk = false;
                     }else{
                         System.out.println("Esperado ]");
                         imprime_erro();
                     }
                 }
             }
-            if(!tokenizer.symbol(tokenizer.token).contains("(")&&!tokenizer.symbol(tokenizer.token).contains(".")&&!tokenizer.symbol(tokenizer.token).contains("[")){
+            if(!tokenizer.symbol(tokenizer.token).contains("(")&&!tokenizer.symbol(tokenizer.token).contains(".")&&!tokenizer.symbol(tokenizer.token).contains("[") && chk){
                 vm.writePush(scopeToSegment(st.kindOf(name)),st.indexOf(name));
             }
         }
         if(tokenizer.symbol(tokenizer.token).contains("(")){
             term += tokenizer.token + "\n         ";
             tokenizer.advance();
+            String ops = operator;
             term += compileExpression();
+            operator = ops;
             if(tokenizer.symbol(tokenizer.token).contains(")")){
                 term += tokenizer.token + "\n         ";
                 tokenizer.advance();
@@ -738,7 +716,9 @@ public class CompilationEngine {
         while (tokenizer.hasMoreTokens()){
             if(isTerm()){
                 numArgs++;
+                String ops = operator;
                 expList += compileExpression();
+                operator = ops;
                 if(tokenizer.symbol(tokenizer.token).contains(",")){
                     expList += tokenizer.token + "\n        ";
                     tokenizer.advance();
@@ -764,7 +744,9 @@ public class CompilationEngine {
                 vm.writeReturn();
             }
             else{
+                String ops = operator;
                 aux = compileExpression();
+                operator = ops;
                 if(aux.contains("intConst")|aux.contains("identifier")|aux.contains("this")){
                     ret += aux;
                     //tokenizer.advance();
@@ -796,7 +778,9 @@ public class CompilationEngine {
             if(tokenizer.symbol(tokenizer.token).contains("(")){
                 ife += tokenizer.token + "\n           ";
                 tokenizer.advance();
+                String ops = operator;
                 ife += compileExpression();
+                operator = ops;
                 if(tokenizer.symbol(tokenizer.token).contains(")")){
                     ife += tokenizer.token + "\n           ";
                     vm.writeIf(labelTrue);
@@ -854,7 +838,9 @@ public class CompilationEngine {
             if(tokenizer.symbol(tokenizer.token).contains("(")){
                 whl += tokenizer.token + "\n           ";
                 tokenizer.advance();
+                String ops = operator;
                 whl += compileExpression();
+                operator = ops;
                 vm.writeArithmetic("not");
                 vm.writeIf(labelWhileEnd);
                 if(tokenizer.symbol(tokenizer.token).contains(")")){
