@@ -148,6 +148,8 @@ public class CompilationEngine {
         while (tokenizer.hasMoreTokens() && (tokenizer.keyWord(tokenizer.token).contains("constructor") | tokenizer.keyWord(tokenizer.token).contains("function") | tokenizer.keyWord(tokenizer.token).contains("method"))){
             subroutine +=  "<subroutineDec>\n      ";
             st.startSubroutine();
+            ifLabelNum = 0;
+            whileLabelNum = 0;
             if (tokenizer.keyWord(tokenizer.token).contains("constructor") | tokenizer.keyWord(tokenizer.token).contains("function") | tokenizer.keyWord(tokenizer.token).contains("method")) {
                  subroutine += tokenizer.token + "\n      ";
                  subroutineType = tokenizer.keyWord(tokenizer.token);
