@@ -21,6 +21,11 @@ public class JackTokenizer {
        //arquivo .jack
        String texto = TextTools.lerArquivoJack(path);
 
+       if(texto.contains("§")){
+           System.out.println("\nNo arquivo: "+path+"\nErro no comentário de bloco");
+           System.exit(-1);
+       }
+
         //busca de palavras e classificacao
         String keywords = TextTools.regexChecker(regKeywords,texto,"keyword");
         String simbolos = TextTools.regexChecker(regSimbolos,texto,"symbol");

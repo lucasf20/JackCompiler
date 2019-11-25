@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="05df82ab-b3c9-49c4-b8c2-5e2594c2d707" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Compilador/JackTokenizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compilador/JackTokenizer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compilador/TextTools.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compilador/TextTools.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />

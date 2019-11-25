@@ -137,8 +137,12 @@ public class TextTools {
         for(int i =0; i < ar.length; i++){
             if(ar[i] == '#'){
                 i++;
-                while (ar[i] != '§' | i < ar.length){
+                while (ar[i] != '§' ){
                     i++;
+                    if(i>= ar.length){
+                        System.out.println("Erro no comentário de bloco");
+                        System.exit(-1);
+                    }
                 }
                 i++;
 
@@ -146,8 +150,6 @@ public class TextTools {
                 rst += ar[i];
             }
         }
-
-
 
         return rst;
     }
