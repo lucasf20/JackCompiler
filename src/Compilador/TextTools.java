@@ -15,7 +15,7 @@ public class TextTools {
         } catch (Exception error){
             System.out.println(error);
         }
-        return rst;
+        return bloco(rst);
     }
 
     public static void escreverXML(String codigo, String path){ //escreve o arquivo.xml
@@ -209,5 +209,26 @@ public class TextTools {
         String divide = file.substring(0,tokenpos);
         Stream<String> lines = divide.lines();
         return (int)lines.count();
+    }
+
+    public static String bloco (String cod){
+        String rst = cod.replace("#", " ");
+        rst = rst.replace("/*","#");
+        rst = rst.replace("*/","#");
+        char[] ar = rst.toCharArray();
+        rst = "";
+        for(int i =0; i < ar.length; i++){
+            if(ar[i] == '#'){
+                i++;
+                while (ar[i] != '#'){
+                    i++;
+                }
+
+            }else{
+                rst += ar[i];
+            }
+        }
+
+        return rst;
     }
 }
