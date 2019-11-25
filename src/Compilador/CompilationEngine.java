@@ -1,5 +1,4 @@
 package Compilador;
-//Verificar auxExp
 
 public class CompilationEngine {
     JackTokenizer tokenizer;
@@ -799,6 +798,7 @@ public class CompilationEngine {
                             if(tokenizer.keyWord(tokenizer.token).contains("else")){
                                 ife += tokenizer.token + "\n           ";
                                 vm.writeGoTo(labelEnd);
+                                vm.writeLabel(labelFalse);
                                 tokenizer.advance();
                                 if(tokenizer.symbol(tokenizer.token).contains("{")){
                                     ife += tokenizer.token + "\n           ";
@@ -814,8 +814,7 @@ public class CompilationEngine {
                                         imprime_erro();
                                     }
                                 }
-                            }
-                            vm.writeLabel(labelFalse);
+                            }else{vm.writeLabel(labelFalse);}
                         }else{
                             System.out.println("Esperado }");
                             imprime_erro();
