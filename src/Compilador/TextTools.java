@@ -131,20 +131,23 @@ public class TextTools {
     public static String bloco (String cod){
         String rst = cod.replace("#", " ");
         rst = rst.replace("/*","#");
-        rst = rst.replace("*/","#");
+        rst = rst.replace("*/","§");
         char[] ar = rst.toCharArray();
         rst = "";
         for(int i =0; i < ar.length; i++){
             if(ar[i] == '#'){
                 i++;
-                while (ar[i] != '#'){
+                while (ar[i] != '§'){
                     i++;
                 }
+                i++;
 
             }else{
                 rst += ar[i];
             }
         }
+
+
 
         return rst;
     }
