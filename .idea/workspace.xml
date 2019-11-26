@@ -2,25 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="05df82ab-b3c9-49c4-b8c2-5e2594c2d707" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ProgramJack/Main.jack" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ProgramJack/Main.vm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ProgramJack/Main.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ProgramJack/main_.vm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ProgramJack/main_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProgramJack/file.vm" beforeDir="false" afterPath="$PROJECT_DIR$/ProgramJack/file.vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProgramJack/main.jack" beforeDir="false" afterPath="$PROJECT_DIR$/ProgramJack/main_.jack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CompiladorJack/Compilador/CompilationEngine.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CompiladorJack/Compilador/JackCompiler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CompiladorJack/Compilador/JackTokenizer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CompiladorJack/Compilador/TextSearch.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JackCompiler/Compilador/CompilationEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JackCompiler/Compilador/CompilationEngine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JackCompiler/Compilador/JackTokenizer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JackCompiler/Compilador/JackTokenizer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JackCompiler/Compilador/SymbolTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JackCompiler/Compilador/SymbolTable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JackCompiler/META-INF/JackCompiler.kotlin_module" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compilador/CompilationEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compilador/CompilationEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Compilador/JackTokenizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compilador/JackTokenizer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Compilador/SymbolTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compilador/SymbolTable.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,22 +143,22 @@
       <screen x="67" y="27" width="1299" height="741" />
     </state>
     <state x="494" y="155" width="424" height="484" key="FileChooserDialogImpl/67.27.1299.741@67.27.1299.741" timestamp="1574790834001" />
-    <state width="1253" height="169" key="GridCell.Tab.0.bottom" timestamp="1574792572368">
+    <state width="1253" height="169" key="GridCell.Tab.0.bottom" timestamp="1574795333384">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state width="1253" height="169" key="GridCell.Tab.0.bottom/67.27.1299.741@67.27.1299.741" timestamp="1574792572368" />
-    <state width="1253" height="169" key="GridCell.Tab.0.center" timestamp="1574792572367">
+    <state width="1253" height="169" key="GridCell.Tab.0.bottom/67.27.1299.741@67.27.1299.741" timestamp="1574795333384" />
+    <state width="1253" height="169" key="GridCell.Tab.0.center" timestamp="1574795333384">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state width="1253" height="169" key="GridCell.Tab.0.center/67.27.1299.741@67.27.1299.741" timestamp="1574792572367" />
-    <state width="1253" height="169" key="GridCell.Tab.0.left" timestamp="1574792572365">
+    <state width="1253" height="169" key="GridCell.Tab.0.center/67.27.1299.741@67.27.1299.741" timestamp="1574795333384" />
+    <state width="1253" height="169" key="GridCell.Tab.0.left" timestamp="1574795333383">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state width="1253" height="169" key="GridCell.Tab.0.left/67.27.1299.741@67.27.1299.741" timestamp="1574792572365" />
-    <state width="1253" height="169" key="GridCell.Tab.0.right" timestamp="1574792572367">
+    <state width="1253" height="169" key="GridCell.Tab.0.left/67.27.1299.741@67.27.1299.741" timestamp="1574795333383" />
+    <state width="1253" height="169" key="GridCell.Tab.0.right" timestamp="1574795333384">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state width="1253" height="169" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1574792572367" />
+    <state width="1253" height="169" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1574795333384" />
     <state x="199" y="27" width="1024" height="741" key="SettingsEditor" timestamp="1574790834988">
       <screen x="67" y="27" width="1299" height="741" />
     </state>

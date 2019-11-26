@@ -597,15 +597,18 @@ public class CompilationEngine {
                 imprime_erro();
             }
         }
+        String un = "";
         if(unaryOp(tokenizer.token)){
+            un = tokenizer.symbol(tokenizer.token);
             term += tokenizer.token + "\n         ";
-            if (tokenizer.symbol(tokenizer.token).contains("-")){
-                vm.writeArithmetic("neg");
-            }else{
-                vm.writeArithmetic("not");
-            }
             tokenizer.advance();
             term += compileTerm();
+            if (un.contains("-")){
+                vm.writeArithmetic("neg");
+            }
+            if(un.contains("~")){
+                vm.writeArithmetic("not");
+            }
         }
         term += "</term>\n         ";
         checkOperator();
