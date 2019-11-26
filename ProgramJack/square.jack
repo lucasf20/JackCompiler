@@ -7,8 +7,8 @@
 
 class Square {
 
-   field int x, y; 
-   field int size; 
+   field int x, y;
+   field int size;
    function int calc () {
       return 1;
    }
@@ -104,3 +104,6 @@ class Square {
       return;
    }
 }
+/*
+sadsa
+*/

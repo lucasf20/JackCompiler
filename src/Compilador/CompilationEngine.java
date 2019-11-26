@@ -70,19 +70,19 @@ public class CompilationEngine {
 
      private String classVarDecAux(){
         String rst ="";
-        String type, kind, name;
+        String type1, kind, name;
         if(tokenizer.keyWord(tokenizer.token).contains("field") | tokenizer.keyWord(tokenizer.token).contains("static")){
             rst += tokenizer.token + "\n      ";
             kind = tokenizer.keyWord(tokenizer.token);
             tokenizer.advance();
             if(type(tokenizer.token)){
                 rst += tokenizer.token+ "\n      ";
-                type = (tokenizer.tokenType(tokenizer.token).contains("keyword"))?tokenizer.keyWord(tokenizer.token):tokenizer.identifier(tokenizer.token);
+                type1 = (tokenizer.tokenType(tokenizer.token).contains("keyword"))?tokenizer.keyWord(tokenizer.token):tokenizer.identifier(tokenizer.token);
                 tokenizer.advance();
                 if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
                     rst += tokenizer.token+ "\n      ";
                     name = tokenizer.identifier(tokenizer.token);
-                    st.define(name,type,kind);
+                    st.define(name,type1,kind);
                     tokenizer.advance();
                     if(tokenizer.symbol(tokenizer.token).contains(",")){
                         while (tokenizer.symbol(tokenizer.token).contains(",")){
@@ -91,7 +91,7 @@ public class CompilationEngine {
                             if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
                                 rst += tokenizer.token+ "\n      ";
                                 name = tokenizer.identifier(tokenizer.token);
-                                st.define(name,type,kind);
+                                st.define(name,type1,kind);
                                 tokenizer.advance();
                             }
                         }

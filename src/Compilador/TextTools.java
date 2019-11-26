@@ -15,7 +15,7 @@ public class TextTools {
         } catch (Exception error){
             System.out.println(error);
         }
-        return rst;
+        return bloco(rst);
     }
 
     public static void escreverXML(String codigo, String path){ //escreve o arquivo.xml
@@ -121,93 +121,38 @@ public class TextTools {
         return rst;
     }
 
-    public static String comentariosDeBloco (String xml){
-        String blockSt = "<symbol>/</symbol>\n" + "<symbol>*</symbol>";
-        String blockEnd = "<symbol>*</symbol>\n" + "<symbol>/</symbol>";
-        String rst = xml.replace(blockSt,"<coment>");
-        if(rst.contains("<coment>"))
-            rst = rst.replace(blockEnd, "</coment>");
-        else
-            rst = rst.replace(blockEnd + "\n","");
-        return eliminaBloco(rst);
-    }
-
-    private static String eliminaBloco (String blocoMarcado){
-        String[] separaBlocos = blocoMarcado.split("<coment>");
-        String rst = "";
-        if(validaComent(blocoMarcado)[0] >= validaComent(blocoMarcado)[1]){
-            for(int i = 0; i < separaBlocos.length; i++){
-                if(separaBlocos[i].split("</coment>").length > 1)
-                    separaBlocos[i] = separaBlocos[i].split("</coment>\n")[1];
-                rst += separaBlocos[i];
-            }
-        }
-        else{
-            for(int i = 0; i < separaBlocos.length - 1; i++){
-                if(separaBlocos[i].split("</coment>").length > 1) {
-                    separaBlocos[i] = separaBlocos[i].split("</coment>\n")[1];
-                }
-                rst += separaBlocos[i];
-            }
-            for(int i = 1; i < separaBlocos[separaBlocos.length - 1].split("</coment>\n").length; i++){
-                rst += "<symbol>*</symbol>\n" + "<symbol>/</symbol>\n" + separaBlocos[separaBlocos.length - 1].split("</coment>\n")[i];
-            }
-        }
-        return rst;
-    }
-
-    private static int[] validaComent(String texto){
-        int[] tags = new int[2];
-        String[] linhaAlinha = texto.split("\n");
-        for(int i = 0; i < linhaAlinha.length; i++){
-            if(linhaAlinha[i].contains("<coment>")){
-                tags[0]++;
-            }
-            if(linhaAlinha[i].contains("</coment>")){
-                tags[1]++;
-            }
-        }
-        return tags;
-    }
-
-    public static int[] removeSujeira(String path, int[] tkst){
-        int[] rst = new int[tkst.length];
-        int[] rst2;
-        int aux =0;
-        int cnt = 0;
-        String file = lerArquivoJack(path);
-        for (int i = 1; i < tkst.length; i++){
-            if(file.charAt(tkst[i-1]) == '/' && file.charAt(tkst[i]) == '*'){
-                rst[i-1] = -1;
-                cnt++;
-                while(i < tkst.length){
-                    rst[i] = -1;
-                    i++;
-                    cnt++;
-                    if(file.charAt(tkst[i]) == '/' && file.charAt(tkst[i-1]) == '*'){
-                        rst[i] = -1;
-                        cnt++;
-                        break;
-                    }
-                }
-            }else{
-                rst[i] = tkst[i];
-            }
-        }
-        rst2 = new int[rst.length - cnt];
-        for(int i = 0; i < rst.length; i++){
-            if(rst[i] != -1){
-                rst2[aux] = rst[i];
-                aux++;
-            }
-        }
-        return rst2;
-    }
-
     public static int controleDeLinha(int tokenpos, String path){
         String file = lerArquivoJack(path);
         String divide = file.substring(0,tokenpos);
         Stream<String> lines = divide.lines();
         return (int)lines.count();
+    }
+
+    public static String bloco (String cod){
+        String rst = cod.replace("#", " ");
+        rst = rst.replace("/*","#");
+        rst = rst.replace("*/","§");
+        char[] ar = rst.toCharArray();
+        rst = "";
+        for(int i =0; i < ar.length; i++){
+            if(ar[i] == '#'){
+                while (ar[i] != '§' ){
+                    i++;
+                    if(i>= ar.length){
+                        System.out.println("Erro no comentário de bloco");
+                        System.exit(-1);
+                    }else{
+                        if(ar[i] == '\n'){
+                            rst += "\n";
+                        }
+                    }
+                }
+                i++;
+            }else{
+                rst += ar[i];
+            }
+        }
+
+        return rst;
     }
 }

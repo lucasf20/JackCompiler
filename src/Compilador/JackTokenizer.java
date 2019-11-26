@@ -13,13 +13,18 @@ public class JackTokenizer {
 
         //regex
        String regStr = "(\"(.*?)\")";
-       String regKeywords = regStr + "|(\\b(constructor|class|function|method|field|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return))|//.*";
+       String regKeywords = regStr + "|(\\b(constructor|class|function|method|field|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return|static))|//.*";
        String regSimbolos = regStr + "|//.*|\\}|\\(|\\)|\\[|\\]|\\.|\\,|\\;|\\+|\\-|\\*|\\/|\\&|\\||\\<|\\>|\\=|\\~|\\{";
        String regNumeros = regStr + "|//.*|(\\b([0-9]|[1-8][0-9]|9[0-9]|[1-8][0-9]{2}|9[0-8][0-9]|99[0-9]|[1-8][0-9]{3}|9[0-8][0-9]{2}|99[0-8][0-9]|999[0-9]|[12][0-9]{4}|3[01][0-9]{3}|32[0-6][0-9]{2}|327[0-5][0-9]|3276[0-7])\\b)";
-       String regIndentificadores = "\\b(?!class|constructor|function|method|field|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return)+([a-z]|[A-Z]|_)([0-9]|[a-z]|[A-Z]|_)*|//.*|" + regStr;
+       String regIndentificadores = "\\b(?!class|constructor|function|method|field|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return|static)+([a-z]|[A-Z]|_)([0-9]|[a-z]|[A-Z]|_)*|//.*|" + regStr;
 
        //arquivo .jack
        String texto = TextTools.lerArquivoJack(path);
+
+       if(texto.contains("§")){
+           System.out.println("\nNo arquivo: "+path+"\nErro no comentário de bloco");
+           System.exit(-1);
+       }
 
         //busca de palavras e classificacao
         String keywords = TextTools.regexChecker(regKeywords,texto,"keyword");
@@ -43,12 +48,10 @@ public class JackTokenizer {
         String xmlOrdenado = TextTools.xmlOrdenado(xmlForaDeOrdemSeparado,tokenSt);
         tokenSt= TextTools.convertParaInt(start);
         tkPos = TextTools.convertParaInt(TextTools.xmlOrdenado(startSp,tokenSt));
-        tkPos = TextTools.removeSujeira(path,tkPos);
 
         //xml final - insercao da tag stringConst
         xmlFinal = xmlOrdenado.replace("&quot;</identifier>","</stringConst>");
         xmlFinal = xmlFinal.replace("<identifier>&quot;","<stringConst>");
-        xmlFinal = TextTools.comentariosDeBloco(xmlFinal); // trata os comentarios de bloco
 
         tokens = xmlFinal.split("\n");
         tokenPos = 0;
