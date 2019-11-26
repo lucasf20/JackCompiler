@@ -1,0 +1,26 @@
+
+class Main {
+
+    static int a ;
+
+    function void f () {
+        let a = 10;
+        return;
+    }
+
+    function void f2() {
+        do Output.printInt(a);
+        return;
+    }
+
+    function void main () {
+
+        var int a;
+        do f();
+        let a = 20;
+        do Output.printInt(a);
+        do f2();
+        return;
+    }
+
+}

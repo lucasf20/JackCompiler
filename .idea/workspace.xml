@@ -2,15 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="05df82ab-b3c9-49c4-b8c2-5e2594c2d707" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ProgramJack/PongGame.jack" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ProgramJack/PongGame.vm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ProgramJack/Main.jack" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ProgramJack/Main.vm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ProgramJack/Main.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ProgramJack/main_.vm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ProgramJack/main_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProgramJack/file.vm" beforeDir="false" afterPath="$PROJECT_DIR$/ProgramJack/file.vm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProgramJack/main.jack" beforeDir="false" afterPath="$PROJECT_DIR$/ProgramJack/main_.jack" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CompiladorJack/Compilador/CompilationEngine.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CompiladorJack/Compilador/JackCompiler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CompiladorJack/Compilador/JackTokenizer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CompiladorJack/Compilador/TextSearch.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JackCompiler/Compilador/CompilationEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JackCompiler/Compilador/CompilationEngine.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JackCompiler/Compilador/JackTokenizer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JackCompiler/Compilador/JackTokenizer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JackCompiler/Compilador/SymbolTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JackCompiler/Compilador/SymbolTable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JackCompiler/META-INF/JackCompiler.kotlin_module" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compilador/CompilationEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compilador/CompilationEngine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compilador/JackTokenizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compilador/JackTokenizer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Compilador/TextTools.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compilador/TextTools.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Compilador/SymbolTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compilador/SymbolTable.java" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,10 +54,15 @@
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
@@ -56,23 +72,11 @@
       <recent name="$PROJECT_DIR$/ProgramJack" />
     </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
   <component name="RunManager">
-    <configuration name="JackCompiler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="JackCompiler" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Compilador.JackCompiler" />
       <module name="JackCompiler" />
-      <option name="PROGRAM_PARAMETERS" value="ProgramJack" />
+      <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/../nand2tetris/projects/11/Pong" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="Compilador.*" />
@@ -89,11 +93,18 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
       <list>
-        <item itemvalue="Application.JackCompiler" />
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
       </list>
-    </recent_temporary>
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -127,5 +138,51 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="311" y="58" width="800" height="677" key="#Project_Structure" timestamp="1574790662723">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="311" y="58" width="800" height="677" key="#Project_Structure/67.27.1299.741@67.27.1299.741" timestamp="1574790662723" />
+    <state x="174" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1574792569859">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="174" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.27.1299.741@67.27.1299.741" timestamp="1574792569859" />
+    <state x="557" y="288" width="308" height="216" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1574790548141">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="557" y="288" width="308" height="216" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/67.27.1299.741@67.27.1299.741" timestamp="1574790548141" />
+    <state x="399" y="124" width="624" height="544" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1574790178778">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="399" y="124" width="624" height="544" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/67.27.1299.741@67.27.1299.741" timestamp="1574790178778" />
+    <state x="494" y="155" width="424" height="484" key="FileChooserDialogImpl" timestamp="1574790834001">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="494" y="155" width="424" height="484" key="FileChooserDialogImpl/67.27.1299.741@67.27.1299.741" timestamp="1574790834001" />
+    <state width="1253" height="169" key="GridCell.Tab.0.bottom" timestamp="1574792572368">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1253" height="169" key="GridCell.Tab.0.bottom/67.27.1299.741@67.27.1299.741" timestamp="1574792572368" />
+    <state width="1253" height="169" key="GridCell.Tab.0.center" timestamp="1574792572367">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1253" height="169" key="GridCell.Tab.0.center/67.27.1299.741@67.27.1299.741" timestamp="1574792572367" />
+    <state width="1253" height="169" key="GridCell.Tab.0.left" timestamp="1574792572365">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1253" height="169" key="GridCell.Tab.0.left/67.27.1299.741@67.27.1299.741" timestamp="1574792572365" />
+    <state width="1253" height="169" key="GridCell.Tab.0.right" timestamp="1574792572367">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1253" height="169" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1574792572367" />
+    <state x="199" y="27" width="1024" height="741" key="SettingsEditor" timestamp="1574790834988">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="199" y="27" width="1024" height="741" key="SettingsEditor/67.27.1299.741@67.27.1299.741" timestamp="1574790834988" />
+    <state x="379" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1574791341976">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="379" y="89" width="672" height="678" key="search.everywhere.popup/67.27.1299.741@67.27.1299.741" timestamp="1574791341976" />
   </component>
 </project>

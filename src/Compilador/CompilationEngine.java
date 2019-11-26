@@ -50,7 +50,8 @@ public class CompilationEngine {
         if(!tokenizer.hasMoreTokens()){
             xml += "</class>";
             vm.close();
-            System.out.println(xml);
+            System.out.println(local);
+            //System.out.println(xml);
             TextTools.escreverXML(xml, local);
         }
         else{
@@ -239,7 +240,7 @@ public class CompilationEngine {
                     break;
             }
             body += compileStatements();
-            if(tokenizer.symbol(tokenizer.token).contains("")){
+            if(tokenizer.symbol(tokenizer.token).contains("}")){
                 body += tokenizer.token + "\n       ";
                 tokenizer.advance();
             }
@@ -271,12 +272,12 @@ public class CompilationEngine {
                         if(tokenizer.symbol(tokenizer.token).contains(",")){
                             varDec += tokenizer.token +"\n         ";
                             tokenizer.advance();
-                            if(varName(tokenizer.token)){
-                                varDec += tokenizer.token +"\n         ";
-                                name = tokenizer.identifier(tokenizer.token);
-                                st.define(name,type,kind);
-                                tokenizer.advance();
-                            }
+//                            if(varName(tokenizer.token)){
+//                                varDec += tokenizer.token +"\n         ";
+//                                name = tokenizer.identifier(tokenizer.token);
+//                                st.define(name,type,kind);
+//                                tokenizer.advance();
+//                            }
                         }
                     }
                 }
@@ -297,7 +298,6 @@ public class CompilationEngine {
 
     public String compileStatements(){
         String statements = "<statements>\n         ";
-        int i = 0;
         while(tokenizer.hasMoreTokens() && (tokenizer.keyWord(tokenizer.token).contains("let")|tokenizer.keyWord(tokenizer.token).contains("do")|tokenizer.keyWord(tokenizer.token).contains("if")|tokenizer.keyWord(tokenizer.token).contains("while")|tokenizer.keyWord(tokenizer.token).contains("return"))){
             if(tokenizer.keyWord(tokenizer.token).contains("let")){
                 statements += compileLet();
@@ -336,7 +336,7 @@ public class CompilationEngine {
             if(varName(tokenizer.token)){
                 let += tokenizer.token + "\n              ";
                 name = tokenizer.identifier(tokenizer.token);
-                st.define(name,type,kind);
+                //st.define(name,type,kind);
                 tokenizer.advance();
                 if(tokenizer.symbol(tokenizer.token).contains("[")){
                     let += tokenizer.token + "\n              ";
@@ -391,16 +391,19 @@ public class CompilationEngine {
     }
 
     private String auxExp(){
-        //verificar este metodo
         String e = "";
-        if(isTerm()){
-            e += compileTerm();
-            if(tokenizer.hasMoreTokens() && op(tokenizer.token)){
-                e += tokenizer.token + "\n            ";
-                operator = tokenizer.symbol(tokenizer.token);
-                tokenizer.advance();
-                e += auxExp();
+        if(!tokenizer.symbol(tokenizer.token).contains("(")) {
+            if (isTerm()) {
+                e += compileTerm();
+                if (tokenizer.hasMoreTokens() && op(tokenizer.token)) {
+                    e += tokenizer.token + "\n            ";
+                    operator = tokenizer.symbol(tokenizer.token);
+                    tokenizer.advance();
+                    e += auxExp();
+                }
             }
+        }else{
+            e += subExpression();
         }
         return e;
     }
@@ -442,10 +445,42 @@ public class CompilationEngine {
         }
     }
 
+    private String subExpression(){
+        String sub = "";
+        if(tokenizer.symbol(tokenizer.token).contains("(")){
+            sub += tokenizer.token + "\n     ";
+            tokenizer.advance();
+            sub += compileExpression();
+            if(tokenizer.symbol(tokenizer.token).contains(")")){
+                sub += tokenizer.token + "\n     ";
+                tokenizer.advance();
+            }
+        }else{
+            sub += compileExpression();
+//            if(tokenizer.symbol(tokenizer.token).contains(")")){
+//                sub += tokenizer.token + "\n     ";
+//                tokenizer.advance();
+//            }
+        }
+        return sub;
+    }
+
     public String compileExpression(){
         String exp = "<expression>\n            ";
         operator = "";
-        exp += auxExp();
+
+        if(tokenizer.symbol(tokenizer.token).contains("(")) {
+            exp += subExpression();
+        }else {
+            exp += auxExp();
+        }
+        if (op(tokenizer.token)) {
+            exp += tokenizer.token + "\n      ";
+            operator = tokenizer.symbol(tokenizer.token);
+            checkOperator();
+            tokenizer.advance();
+            exp += compileExpression();
+        }
         operator = "";
         exp += "</expression>\n            ";
         return exp;
@@ -465,6 +500,9 @@ public class CompilationEngine {
             }
         }
         if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
+            rst = true;
+        }
+        if(unaryOp(tokenizer.token)){
             rst = true;
         }
         if(!rst){
@@ -606,7 +644,9 @@ public class CompilationEngine {
                     vm.writePush(scopeToSegment(st.kindOf(ident)),st.indexOf(ident));
                     if(tokenizer.tokenType(tokenizer.token).contains("identifier")){
                         call += tokenizer.token + "\n       ";
-                        ident = st.typeOf(nameAux) + "." + tokenizer.identifier(tokenizer.token);
+//                        ident = st.typeOf(nameAux) + "." + tokenizer.identifier(tokenizer.token);
+                        ident = nameAux + "." + tokenizer.identifier(tokenizer.token);
+                        //System.out.println(nameAux);
                         tokenizer.advance();
                         if(tokenizer.symbol(tokenizer.token).contains("(")){
                             call += tokenizer.token + "\n       ";
@@ -714,18 +754,26 @@ public class CompilationEngine {
     public String compileExpressionList(){
         numArgs = 0;
         String expList = "<expressionList>\n        ";
-        while (tokenizer.hasMoreTokens()){
-            if(isTerm()){
-                numArgs++;
-                String ops = operator;
+        while (tokenizer.hasMoreTokens()) {
+            if (tokenizer.symbol(tokenizer.token).contains("(")) {
                 expList += compileExpression();
-                operator = ops;
-                if(tokenizer.symbol(tokenizer.token).contains(",")){
+            } else {
+                if (tokenizer.symbol(tokenizer.token).contains(",")) {
                     expList += tokenizer.token + "\n        ";
                     tokenizer.advance();
-                }
-                else{
-                    break;
+                }else {
+                    if (isTerm()) {
+                        numArgs++;
+                        String ops = operator;
+                        expList += compileExpression();
+                        operator = ops;
+                        if (tokenizer.symbol(tokenizer.token).contains(",")) {
+                            expList += tokenizer.token + "\n        ";
+                            tokenizer.advance();
+                        } else {
+                            break;
+                        }
+                    }
                 }
             }
         }
